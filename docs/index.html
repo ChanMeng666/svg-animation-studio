@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SVG Animation Studio — Live Preview</title>
+  <meta name="description" content="Composable SVG animation system driven by Claude Code. Five working presets, animated live." />
+  <meta property="og:title" content="SVG Animation Studio" />
+  <meta property="og:description" content="Describe an animation in natural language. Get a production-ready .svg file." />
+  <style>
+    :root {
+      --bg: #0a0a0b;
+      --surface: #14141a;
+      --border: #2a2a35;
+      --text: #f5f5f7;
+      --muted: #8a8a95;
+      --accent: #c4a8ff;
+      --code-bg: #1f1f28;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
+    header { margin-bottom: 48px; }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .tagline {
+      font-size: 1.125rem;
+      color: var(--muted);
+      max-width: 640px;
+      margin-bottom: 20px;
+    }
+    .links { display: flex; gap: 16px; flex-wrap: wrap; }
+    .links a {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: all 0.15s;
+    }
+    .links a:hover { border-color: var(--accent); background: var(--code-bg); }
+    .links a.primary { background: var(--accent); color: #1a0e3a; border-color: var(--accent); font-weight: 600; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 64px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: border-color 0.15s;
+    }
+    .card:hover { border-color: var(--accent); }
+    .card-svg {
+      background: #f7f7f8;
+      border-radius: 8px;
+      padding: 12px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 180px;
+      margin-bottom: 12px;
+    }
+    .card-svg img { max-width: 100%; height: auto; }
+    .card-name {
+      font-family: "SF Mono", Menlo, monospace;
+      font-size: 0.875rem;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .card-desc {
+      font-size: 0.8125rem;
+      color: var(--muted);
+      text-align: center;
+    }
+    section.demo {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 32px;
+    }
+    section.demo h2 { font-size: 1.25rem; margin-bottom: 16px; }
+    pre {
+      background: var(--code-bg);
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: "SF Mono", Menlo, monospace;
+      font-size: 0.875rem;
+      color: #e5e5e7;
+    }
+    .quote {
+      font-style: italic;
+      color: var(--muted);
+      padding-left: 16px;
+      border-left: 2px solid var(--accent);
+      margin: 12px 0;
+    }
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      color: var(--muted);
+      font-size: 0.8125rem;
+      text-align: center;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>SVG Animation Studio</h1>
+      <p class="tagline">
+        A composable SVG animation system driven by Claude Code.
+        Describe an animation in natural language. Get a production-ready
+        <code>.svg</code> file.
+      </p>
+      <div class="links">
+        <a href="https://github.com/ChanMeng666/svg-animation-studio" class="primary">GitHub →</a>
+        <a href="https://github.com/ChanMeng666/svg-animation-studio/blob/main/README.md">README</a>
+        <a href="https://github.com/ChanMeng666/svg-animation-studio/blob/main/docs/ARCHITECTURE.md">Architecture</a>
+        <a href="https://github.com/ChanMeng666/svg-animation-studio/releases/tag/v0.1.0">v0.1.0 Release</a>
+      </div>
+    </header>
+
+    <section class="demo">
+      <h2>The 30-second demo</h2>
+      <p>Open the repo in Claude Code. Type a sentence. Watch it animate.</p>
+      <div class="quote">"做一个会跳的紫色机器人"  (make me a jumping purple robot)</div>
+      <pre>/svg-animate auto-triggers
+  → forks the closest existing preset (claude-jumping)
+  → reuses 4 motion primitives + 2 shape primitives
+  → writes output/purple-robot-jumping.svg
+  → /svg-verify dispatches a subagent, returns ≤100-word verdict
+  → iterates once on the feedback
+  → offers /svg-export to ship</pre>
+      <p style="margin-top: 16px; color: var(--muted); font-size: 0.9rem;">
+        No SVG hand-written. No keyframe manually computed. The 5th preset
+        below (<code>purple-robot-jumping</code>) was generated entirely from
+        that single sentence in a real field test.
+      </p>
+    </section>
+
+    <h2 style="margin-bottom: 20px;">Five working presets</h2>
+    <p style="color: var(--muted); margin-bottom: 24px;">
+      Each preset is a working file (~30–50 lines) that composes motion, shape,
+      and filter primitives. Click to view source.
+    </p>
+
+    <div class="grid">
+      <a class="card" href="https://github.com/ChanMeng666/svg-animation-studio/blob/main/lib/presets/claudeJumping.js" style="text-decoration: none; color: inherit;">
+        <div class="card-svg"><img src="preview/claude-jumping.svg" alt="claude-jumping" /></div>
+        <div class="card-name">claude-jumping</div>
+        <div class="card-desc">Squash-stretch jump + ear bounce stagger + synced shadow</div>
+      </a>
+      <a class="card" href="https://github.com/ChanMeng666/svg-animation-studio/blob/main/lib/presets/claudeSpeaking.js" style="text-decoration: none; color: inherit;">
+        <div class="card-svg"><img src="preview/claude-speaking.svg" alt="claude-speaking" /></div>
+        <div class="card-name">claude-speaking</div>
+        <div class="card-desc">Idle bob + mouth talk + sound waves + floating music notes</div>
+      </a>
+      <a class="card" href="https://github.com/ChanMeng666/svg-animation-studio/blob/main/lib/presets/codexJumping.js" style="text-decoration: none; color: inherit;">
+        <div class="card-svg"><img src="preview/codex-jumping.svg" alt="codex-jumping" /></div>
+        <div class="card-name">codex-jumping</div>
+        <div class="card-desc">Gradient cloud body + filter depth + same kinematics</div>
+      </a>
+      <a class="card" href="https://github.com/ChanMeng666/svg-animation-studio/blob/main/lib/presets/codexSpeaking.js" style="text-decoration: none; color: inherit;">
+        <div class="card-svg"><img src="preview/codex-speaking.svg" alt="codex-speaking" /></div>
+        <div class="card-name">codex-speaking</div>
+        <div class="card-desc">Voice rings + glow filters + ellipse mouth</div>
+      </a>
+      <a class="card" href="https://github.com/ChanMeng666/svg-animation-studio/blob/main/lib/presets/purpleRobotJumping.js" style="text-decoration: none; color: inherit;">
+        <div class="card-svg"><img src="preview/purple-robot-jumping.svg" alt="purple-robot-jumping" /></div>
+        <div class="card-name">purple-robot-jumping</div>
+        <div class="card-desc">Grown entirely from one natural-language sentence</div>
+      </a>
+    </div>
+
+    <section class="demo">
+      <h2>Quick start</h2>
+      <pre>git clone https://github.com/ChanMeng666/svg-animation-studio.git
+cd svg-animation-studio
+npm install
+
+npm run dev                              # preview grid at localhost:3030
+node lib/render-cli.js claude-jumping    # render a preset to output/
+npm test                                 # snapshot test suite</pre>
+    </section>
+
+    <footer>
+      Built with <a href="https://claude.com/claude-code">Claude Code</a>.
+      MIT licensed. © 2026 <a href="https://github.com/ChanMeng666">Chan Meng</a>.
+    </footer>
+  </div>
+</body>
+</html>
