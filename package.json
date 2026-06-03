@@ -1,0 +1,28 @@
+{
+  "name": "svg-animation-studio",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Composable SVG animation primitives driven by Claude Code",
+  "scripts": {
+    "dev": "next dev playground -p 3030",
+    "build": "next build playground",
+    "render": "node lib/render-cli.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:snapshot": "vitest run tests/snapshot",
+    "snapshot:update": "vitest run tests/snapshot -u",
+    "optimize": "svgo -f output -o output --multipass"
+  },
+  "dependencies": {
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "svgo": "^3.3.0"
+  },
+  "devDependencies": {
+    "vitest": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,38 @@
+// Template — copy to index.ts and complete when activating this package.
+// See ../README.md and ../../docs/sprint-4-workflows.md for context.
+
+// import { query } from '@anthropic-ai/claude-agent-sdk';
+// import path from 'path';
+
+export interface AnimateOptions {
+  /** Natural-language description of the desired animation. */
+  description: string;
+  /** Directory to write the final .svg into. Defaults to studio's output/. */
+  outputDir?: string;
+  /** When > 1, delegates to the svg-explorer subagent. Default 1. */
+  variants?: number;
+  /** Path to a local clone of svg-animation-studio. Defaults to bundled. */
+  studioPath?: string;
+  /** Stream progress events as they arrive. */
+  onProgress?: (event: ProgressEvent) => void;
+}
+
+export type ProgressEvent =
+  | { type: 'skillLoaded'; skill: string }
+  | { type: 'outputWritten'; path: string; bytes: number }
+  | { type: 'verdict'; result: 'pass' | 'tweak' | 'fail'; summary: string }
+  | { type: 'error'; message: string };
+
+export interface AnimateResult {
+  outputPath: string;
+  verdict: 'pass' | 'tweak' | 'fail';
+  primitivesUsed: string[];
+  /** Variant outputs when variants > 1. */
+  variants?: Array<{ slug: string; path: string }>;
+}
+
+export async function animateSVG(_opts: AnimateOptions): Promise<AnimateResult> {
+  throw new Error(
+    'agent-sdk-wrapper is scaffolding only. See README.md for activation steps.'
+  );
+}

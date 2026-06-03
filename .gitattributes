@@ -1,0 +1,12 @@
+# Snapshot byte-stability — never touch line endings on SVG snapshots
+tests/snapshot/__snapshots__/*.svg text eol=lf
+docs/preview/*.svg                  text eol=lf
+
+# Source SVG previews — also keep LF for byte parity with snapshots
+output/*.svg                        text eol=lf
+
+# Markdown — normalize to LF so diffs across platforms stay clean
+*.md                                text eol=lf
+
+# Default: let git handle it
+*                                   text=auto

@@ -1,0 +1,10 @@
+node_modules/
+.next/
+output/*.svg
+!output/.gitkeep
+.DS_Store
+*.log
+coverage/
+.vitest/
+# Reference Lottie sample (2.4 MB) - kept locally, fetched on demand
+ref/lottie-import-example.svg

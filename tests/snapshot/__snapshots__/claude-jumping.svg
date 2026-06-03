@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 90" width="140" height="126">
+  <title>Claude character jumping</title>
+  <desc>Pixel-art Claude mascot with squash-and-stretch jump, waving arms, ear bounce, and synced ground shadow.</desc>
+  <style>
+    .cv-jump-1 {
+      animation: kf-cv-jump-1 0.5s ease-in-out infinite;
+      transform-origin: center bottom;
+    }
+    @keyframes kf-cv-jump-1 {
+      0%, 100% { transform: translateY(0) scaleY(1) scaleX(1); }
+      30% { transform: translateY(-16px) scaleY(1.1) scaleX(0.95); }
+      50% { transform: translateY(-18px) scaleY(1.05) scaleX(0.98); }
+      80% { transform: translateY(-5px) scaleY(0.95) scaleX(1.05); }
+    }
+    .cv-shadow-2 {
+      animation: kf-cv-shadow-2 0.5s ease-in-out infinite;
+    }
+    @keyframes kf-cv-shadow-2 {
+      0%, 100% { transform: scaleX(1); opacity: 0.25; }
+      50% { transform: scaleX(0.4); opacity: 0.08; }
+    }
+    .cv-wave-left-3 {
+      animation: kf-cv-wave-left-3 0.5s ease-in-out infinite;
+      transform-origin: right center;
+    }
+    @keyframes kf-cv-wave-left-3 {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-25deg); }
+    }
+    .cv-wave-right-4 {
+      animation: kf-cv-wave-right-4 0.5s ease-in-out infinite;
+      transform-origin: left center;
+    }
+    @keyframes kf-cv-wave-right-4 {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(25deg); }
+    }
+    .cv-ear-5 {
+      animation: kf-cv-ear-5 0.5s ease-in-out infinite 0s;
+      transform-origin: center bottom;
+    }
+    @keyframes kf-cv-ear-5 {
+      0%, 100% { transform: scaleY(1); }
+      40% { transform: scaleY(1.2); }
+      60% { transform: scaleY(0.85); }
+    }
+    .cv-ear-6 {
+      animation: kf-cv-ear-6 0.5s ease-in-out infinite 0.1s;
+      transform-origin: center bottom;
+    }
+    @keyframes kf-cv-ear-6 {
+      0%, 100% { transform: scaleY(1); }
+      40% { transform: scaleY(1.2); }
+      60% { transform: scaleY(0.85); }
+    }
+  </style>
+<ellipse class="cv-shadow-2" cx="50" cy="82" rx="22" ry="5" fill="#000"/>
+
+  <g class="cv-jump-1">
+    <rect class="cv-ear-5" x="22" y="10" width="8" height="14" fill="#E07C4C"/>
+    <rect class="cv-ear-6" x="70" y="10" width="8" height="14" fill="#E07C4C"/>
+    <rect x="18" y="24" width="64" height="4" fill="#E07C4C"/>
+    <rect x="14" y="28" width="72" height="32" fill="#E07C4C"/>
+    <rect x="30" y="34" width="8" height="10" fill="#000000"/>
+    <rect x="62" y="34" width="8" height="10" fill="#000000"/>
+    <rect class="cv-wave-left-3" x="2" y="36" width="12" height="8" fill="#E07C4C"/>
+    <rect class="cv-wave-right-4" x="86" y="36" width="12" height="8" fill="#E07C4C"/>
+    <rect x="24" y="60" width="12" height="14" fill="#E07C4C"/>
+    <rect x="64" y="60" width="12" height="14" fill="#E07C4C"/>
+  </g>
+</svg>
