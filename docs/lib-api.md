@@ -165,6 +165,85 @@ Used by: `codex-speaking` × 2 staggered. Source: `codex-speaking.svg:166-177`.
 
 ---
 
+### `createRevealUp(opts)`
+
+One-shot entrance: the target fades in while sliding up from `distance` px, then
+holds. Runs a single iteration with `fill-mode: both`, so it stays at the `from`
+state during `delay` (stagger) and settles on `to`. The element's own base style
+must be the final/visible state, so `prefers-reduced-motion` shows the finished frame.
+
+| opt | type | default |
+|---|---|---|
+| `duration` | string | `'0.7s'` |
+| `easing` | string | `'easeOutBack'` |
+| `delay` | string | `'0s'` |
+| `distance` | number (px) | `12` |
+
+Used by: `chan-cover` (name / rule / tagline / positioning, staggered).
+
+### `createBlink(opts)`
+
+Occasional blink: the target scales vertically to a thin slit at 96% of the cycle,
+open the rest of the time. Uses `transform-box: fill-box; transform-origin: center`
+so wrapping a pair of eyes closes them toward their shared centre line. `duration`
+sets the gap between blinks.
+
+| opt | type | default |
+|---|---|---|
+| `duration` | string | `'6s'` |
+| `easing` | string | `'easeInOut'` |
+| `closedScale` | number | `0.1` |
+
+Used by: `chan-cover` (the monkey's two eye circles).
+
+### `createShimmer(opts)`
+
+Slow opacity shimmer: a quiet pulse between `maxOpacity` and `minOpacity`. For a
+single restrained accent (not a whole composition).
+
+| opt | type | default |
+|---|---|---|
+| `duration` | string | `'7s'` |
+| `easing` | string | `'easeInOut'` |
+| `minOpacity` / `maxOpacity` | number | `0.78` / `1` |
+
+Used by: `chan-cover` (the orange rule).
+
+### `createDrift(opts)`
+
+Continuous in-place float: a gentle vertical bob plus an optional rotate wobble,
+looping forever. Uses `transform-box: fill-box; transform-origin: center` so it
+sways around the element's own centre — good for floating accents and idle motion.
+
+| opt | type | default |
+|---|---|---|
+| `duration` | string | `'4s'` |
+| `easing` | string | `'easeInOut'` |
+| `delay` | string | `'0s'` |
+| `amplitude` | number (px) | `8` |
+| `rotate` | number (deg) | `0` |
+
+Used by: `chan-cover` (the monkey lockup + 7 drifting pixel-squares, each staggered).
+
+### `createSweep(opts)`
+
+Continuous horizontal sweep for a gleam clipped to text/shape: the element holds
+off-screen for `holdPct` of the cycle, then slides `distance` px across (and past)
+before looping — a periodic shine. The swept element must be authored off-screen
+(e.g. negative `x`) so the reduced-motion base state is invisible.
+
+| opt | type | default |
+|---|---|---|
+| `duration` | string | `'5s'` |
+| `easing` | string | `'linear'` |
+| `delay` | string | `'0s'` |
+| `distance` | number (px) | `1000` |
+| `holdPct` | number (0–100) | `55` |
+
+Used by: `chan-cover` (a glare gleam clipped to the "Chan Meng" wordmark).
+
+---
+
 ## shapes.*
 
 ### `createGroundShadow({ cx, cy, rx, ry, color?, applyClass? })`

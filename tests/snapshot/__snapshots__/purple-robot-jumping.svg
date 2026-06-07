@@ -54,6 +54,9 @@
       40% { transform: scaleY(1.2); }
       60% { transform: scaleY(0.85); }
     }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
   </style>
   <defs>
     <filter id="pr-depth" x="-15%" y="-15%" width="130%" height="140%">

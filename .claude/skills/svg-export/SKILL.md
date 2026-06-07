@@ -47,27 +47,44 @@ If structural checks fail, return:
 
 ## Step 2 — Optimize with SVGO
 
-Run SVGO with multipass. Preserve `viewBox` (do not strip!), preserve
-`title` and `desc` (those are accessibility, not bloat).
+The repo ships an **animation-safe** `svgo.config.mjs` at its root, which SVGO
+picks up automatically. Just point at input + output:
 
 ```bash
-npx svgo output/<slug>.svg -o output/<slug>.min.svg --multipass \
-  --enable=preset-default \
-  --disable=removeViewBox,removeTitle,removeDesc
+npx svgo -i output/<slug>.svg -o output/<slug>.min.svg
 ```
 
-Capture before/after sizes. Typical savings: 30–60%. If savings are <
-5%, the file is already small or SVGO has nothing to do — that's fine,
-not a problem.
+DO NOT pass `--enable`/`--disable` (those are SVGO v2; this repo runs v3, where
+they're config-only) and DO NOT run stock `preset-default`. Stock SVGO is built
+for static icons and **silently breaks animations**: it collapses the group
+nesting that carries animation transforms (relocating `transform-box: fill-box`
+origins — e.g. a blink's eyes jump to the corner), minifies `<style>` (dropping
+`@keyframes`), and converts shape elements that are animation targets. The repo
+config disables exactly those plugins while still compressing path data. See
+`docs/embedding-animated-svg.md`.
 
-## Step 3 — Verify minified file still composes
+Capture before/after sizes. Typical savings: 35–40% on an animated preset. If
+savings are < 5%, the file is already small — that's fine, not a problem.
 
-Quick parse check — the file must contain `<svg` and `</svg>` and be
-non-empty after minification. If not, abort and keep the unminified
-version as the authoritative output:
+**Always re-verify the minified file animates** (Step 3) — a size win that
+broke the motion is a regression, not an optimization.
+
+## Step 3 — Verify minified file still composes AND animates
+
+Parse check — the file must contain `<svg` and `</svg>` and be non-empty.
+For an animated source, ALSO confirm the motion survived:
+
+- The `<style>` block and every `@keyframes` still present (grep count matches
+  the source). A 0 here means SVGO dropped the animation.
+- If the source has `transform-box`, it's still there.
+- Ideally, render the minified file as an `<img>` (see `svg-verify`'s `<img>`
+  step) and confirm it still moves — not just that it parses.
+
+If any check fails, abort and keep the unminified version as authoritative:
 
 ```
-WARNING: SVGO produced unparseable output. Keeping output/<slug>.svg as final.
+WARNING: SVGO altered the animation (e.g. @keyframes dropped / blink detached).
+Keeping output/<slug>.svg as final. Check svgo.config.mjs is being applied.
 ```
 
 ## Step 4 — Copy to destination (if requested)

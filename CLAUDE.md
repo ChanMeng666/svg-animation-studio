@@ -43,7 +43,7 @@ primitives that came before.
 > Names only. Full signatures live in `docs/lib-api.md`. Open that file when
 > composing a preset or extending a primitive.
 
-**`lib/primitives/motion.js`** — animation kinematics (10)
+**`lib/primitives/motion.js`** — animation kinematics (15)
 - `createJump` — squash-and-stretch jump with synced shadow hook
 - `createBob` — gentle vertical idle loop
 - `createTalk` — mouth open/close via Y-scale
@@ -54,6 +54,11 @@ primitives that came before.
 - `createSoundWaveExpand` — outward scale with fadeout for arcs
 - `createFloatingNote` — drift + rotate + fade for music notes
 - `createVoiceRing` — gentle scale-and-opacity pulse around voice source
+- `createRevealUp` — one-shot fade + slide-up entrance (staggerable, holds)
+- `createBlink` — occasional eye-blink via brief Y-scale slit
+- `createShimmer` — slow opacity shimmer for a single restrained accent
+- `createDrift` — continuous in-place float (bob + optional rotate wobble)
+- `createSweep` — periodic horizontal gleam sweep (holds off-screen, then crosses)
 
 **`lib/primitives/shapes.js`** — reusable geometry (11)
 - `createGroundShadow` — `<ellipse>` shadow with class hook
@@ -79,8 +84,11 @@ primitives that came before.
 - `smilSplines` — named SMIL keySplines strings
 
 **`lib/composer.js`**
-- `composeSVG({viewBox, width, height, style, defs, body})` — assemble final SVG
+- `composeSVG({viewBox, width, height, style, defs, body, reducedMotion=true})` — assemble final SVG; `reducedMotion` (default on) auto-appends the `prefers-reduced-motion` fallback when there's a `<style>`
 - `escapeXml(text)` — XML entity escape
+
+**`scripts/`** (build-time helpers)
+- `outline-text.mjs --font --text --size [--out --key]` — text → SVG `<path>` (fonts don't load in `<img>` mode; outline them)
 
 ## 4. Workflow (the natural-language loop)
 
@@ -156,4 +164,5 @@ For complex multi-asset jobs ("brand kit"), see
 - How to design a new subagent → `docs/sprint-3-subagents.md`
 - How to add a primitive safely → `docs/extension-protocol.md`
 - Animation feels off → `docs/animation-principles.md`
+- SVG broken once embedded on GitHub / in a README (`<img>`) → `docs/embedding-animated-svg.md` (fonts→outline, transform-attr vs CSS-transform, reduced-motion, SVGO hazards)
 - What shipped, when, and why → `CHANGELOG.md`

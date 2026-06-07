@@ -36,6 +36,9 @@
       0%, 100% { transform: rotate(0deg); }
       50% { transform: rotate(25deg); }
     }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
   </style>
   <defs>
     <linearGradient id="cx-body-grad" x1="0.5" y1="0" x2="0.5" y2="1">

@@ -87,6 +87,9 @@
       0% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
       100% { opacity: 0; transform: translate(10px, -35px) rotate(20deg); }
     }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
   </style>
 <ellipse class="cv-shadow-p-2" cx="50" cy="82" rx="22" ry="5" fill="#000"/>
 

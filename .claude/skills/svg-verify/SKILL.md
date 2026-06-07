@@ -60,6 +60,32 @@ return:
 > VERDICT: fail
 > /api/svg returned <status> or compose() threw: <one line>.
 
+### 2b. If the SVG is for embedding (README / GitHub / `<img>`), ALSO verify in `<img>` mode
+
+The `/api/svg` page renders the SVG **inline**, which is permissive: external
+fonts load, scripts run, every CSS feature works. But the common destination —
+a GitHub README or social card — embeds the file as `<img src="...svg">`, a
+**restricted image document** that behaves differently. Inline-only verification
+gives false passes. When the target is an embed, verify there too:
+
+- Write a tiny same-origin host page next to the SVG and open it:
+  `<body><img src="<slug>.svg" width="..."></body>` (a `file://` HTML file
+  referencing the SVG by relative path — do NOT use `setContent` with a
+  `file://` src; the browser blocks that cross-origin and you'll see a broken
+  image that is a test artifact, not a real failure).
+- Confirm the image actually decoded: `img.naturalWidth > 0`.
+- Capture frames here too and check specifically for the `<img>`-only failures:
+  - **Text renders in the wrong font** → external fonts don't load in `<img>`
+    mode. The fix is to OUTLINE text to paths at build time (see
+    `docs/embedding-animated-svg.md`), not to rely on `font-family`.
+  - **Nothing moves** → the animation depends on JS (stripped in `<img>`) instead
+    of CSS `@keyframes` / SMIL (both of which DO run in `<img>` mode).
+- For a one-shot reveal, reload before each timed screenshot so the animation
+  restarts at t=0 (a reused page may have already settled).
+
+Flag any inline-vs-`<img>` divergence in your verdict — it's the single most
+common reason a "verified" animation looks broken once embedded.
+
 ### 3. Capture 5 keyframes
 
 Animation is running in real time. Take screenshots in quick succession
