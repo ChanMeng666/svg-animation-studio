@@ -5,7 +5,72 @@ Versioning: [SemVer](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-_Nothing yet._
+### Theme: make chan-cover-level polish repeatable (2026-06-12)
+
+Borrowed the transferable ideas from three reference projects
+(`gradient-svg-generator` → palette library + animated gradients;
+`css-tower-defense` → layered material + particle staggers; `tiny-yurts` →
+layered `<g>` scene ordering + bouncy easing) and promoted chan-cover's bespoke
+recipes into reusable lib capability. Every change is additive — the 7 original
+snapshots are byte-identical; `chan-cover` is the frozen reference.
+
+#### Added — theme & composition systems
+
+- `lib/palettes.js` — curated theme system. 8 frozen palettes (`caldera` = the
+  exact chan-cover brand tokens, plus `mono`/`midnight`/`sunset`/`nature`/
+  `neon`/`pastel`/`ocean`). `getPalette()` / `listPalettes()`. Token shape
+  `{ bg, bgAlt, ink, muted, accents[], line, dark }`; presets reference accents
+  by index to stay portable. (NOT a primitive — data module, edited directly.)
+- `lib/scene.js` — layer/scene composer. `composeScene({ layers, defs, style })`
+  + `layer()`. Orders layers back-to-front and AUTO-NESTS a layer's static
+  `transform` + animated `className` into two `<g>` levels (solves Gotcha 2
+  mechanically). Sits below `composeSVG`. Covered by `tests/unit/scene.test.js`.
+
+#### Added — primitives (via `/svg-add-primitive` / `lib-extender`)
+
+- **motion (+6, now 21):** `createSpin`, `createPulse`, `createRipple`,
+  `createOrbit`, `createParallaxDrift`, and `createParticleStagger`
+  (seeded-deterministic field of drifts — promotes chan-cover's square array).
+- **shapes (+5, now 16):** `createAccentSquare`, `createBadgeShape`,
+  `createStar`, `createBurst`, `createPanel`.
+- **decor (NEW category, 3):** `createDotGridBackground`, `createGradientWash`
+  (optional SMIL `animate`), `createTextGleamClip` (clips to a `<path>` via
+  `pathD` OR arbitrary markup via `clipContent`, e.g. a system-font `<text>`).
+  These return `{ defs, body }` — the documented exception to "shapes return a
+  string" — and pair with `composeScene` layers.
+- **easing (+3):** `elastic`, `anticipate`, `bouncyCubic` (CSS-only; overshoot
+  control points are invalid for SMIL `keySplines`).
+
+#### Added — preset families (+15, palette-driven, via `composeScene`)
+
+- Covers: **`brand-cover`** (the repeatable chan-cover successor — fork this),
+  `gradient-cover`.
+- Banners: `hero-strip`, `repo-hero`, `gleam-banner`.
+- Logos/badges: `orbit-logo`, `pulse-mono-logo`, `spin-badge`.
+- Loaders/backgrounds/characters: `dot-loader`, `ripple-loader`,
+  `orbit-spinner`, `star-loader`, `accent-card`, `drift-field`, `bounce-char`.
+
+All 22 presets verified in `<img>` (GitHub) mode via `svg-verifier`; `brand-cover`
+graded "polished and ship-ready".
+
+#### Changed
+
+- Playground rebuilt: `/api/presets` now returns metadata `[{name,category,
+  width,height,viewBox}]`; new `/api/palettes`; gallery groups by category and
+  adds a light/dark preview toggle, a palette switcher, and per-card copy-embed.
+- Presets carry an additive `category` field (no snapshot impact).
+- Docs: `lib-api.md` (all new primitives + palettes/scene sections, count
+  39 primitives), `CLAUDE.md` (index + map + rule 2), `embedding-animated-svg.md`
+  (recipes→primitives, + Gotcha 6 SMIL/reduced-motion, Gotcha 7 no `--i`
+  stagger), the svg-animate skill + `preset-cookbook.md` (palette + composeScene
+  workflow + new-family recipes).
+
+#### Notes
+
+- `--i` CSS-custom-property stagger does NOT transfer to `<img>` mode → baked
+  per-class `animation-delay` at build time instead (`createParticleStagger`).
+- Animated gradient washes use SMIL (runs in `<img>`) but ignore
+  `prefers-reduced-motion` — used only where subtle continuous motion is fine.
 
 ---
 

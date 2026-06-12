@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <title>Loading — orbit spinner</title>
+  <desc>A dashed ring spins while an orange accent dot orbits the center.</desc>
+  <style>
+    .cv-spin-1 {
+      animation: kf-cv-spin-1 3s linear infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-spin-1 {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .cv-orbit-2 {
+      animation: kf-cv-orbit-2 4s linear infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-orbit-2 {
+      from { transform: rotate(0deg) translateX(26px) rotate(0deg); }
+      to   { transform: rotate(360deg) translateX(26px) rotate(-360deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
+  </style>
+<circle cx="40" cy="40" r="6" fill="#070607"/>
+  <circle class="cv-spin-1" cx="40" cy="40" r="26" fill="none" stroke="#E2E2DF" stroke-width="4" stroke-dasharray="8 12"/>
+  <circle class="cv-orbit-2" cx="40" cy="40" r="5" fill="#FC5000"/>
+</svg>

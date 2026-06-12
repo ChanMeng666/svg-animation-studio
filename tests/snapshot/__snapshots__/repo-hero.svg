@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" width="1200" height="360">
+  <title>project-name — repo banner</title>
+  <desc>A centered project banner on a slow animated gradient wash, with the title and one-line description revealing in, two accent dots orbiting at the flanks, a shimmering underline, and a pulsing sparkle.</desc>
+  <style>
+    .cv-reveal-1 {
+      animation: kf-cv-reveal-1 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0s 1 both;
+    }
+    @keyframes kf-cv-reveal-1 {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cv-reveal-2 {
+      animation: kf-cv-reveal-2 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.12s 1 both;
+    }
+    @keyframes kf-cv-reveal-2 {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cv-shimmer-3 {
+      animation: kf-cv-shimmer-3 7s ease-in-out infinite;
+    }
+    @keyframes kf-cv-shimmer-3 {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.78; }
+    }
+    .cv-orbit-4 {
+      animation: kf-cv-orbit-4 5s linear infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-orbit-4 {
+      from { transform: rotate(0deg) translateX(14px) rotate(0deg); }
+      to   { transform: rotate(-360deg) translateX(14px) rotate(360deg); }
+    }
+    .cv-orbit-5 {
+      animation: kf-cv-orbit-5 5s linear infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-orbit-5 {
+      from { transform: rotate(0deg) translateX(14px) rotate(0deg); }
+      to   { transform: rotate(360deg) translateX(14px) rotate(-360deg); }
+    }
+    .cv-pulse-6 {
+      animation: kf-cv-pulse-6 2s ease-in-out infinite 0s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-pulse-6 {
+      0%, 100% { transform: scale(0.5); }
+      50% { transform: scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
+  </style>
+  <defs>
+    <linearGradient id="rh-wash" x1="0.0000" y1="0.5000" x2="1.0000" y2="0.5000"><stop offset="0" stop-color="#E3F2FD"/><stop offset="0.5" stop-color="#F5FBFF"/><stop offset="1" stop-color="#E3F2FD"/>
+      <animate attributeName="x1" values="-0.5;0.5;1;0.5;-0.5" dur="11s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="0.5;1.5;2;1.5;0.5" dur="11s" repeatCount="indefinite"/></linearGradient>
+    <pattern id="rh-dots" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.6" fill="#0A2540" fill-opacity="0.05"/>
+    </pattern>
+  </defs>
+<rect x="0" y="0" width="1200" height="360" fill="url(#rh-wash)"/>
+  <rect x="0" y="0" width="1200" height="360" fill="url(#rh-dots)"/>
+  <g transform="translate(300,150)"><g class="cv-orbit-4"><circle cx="0" cy="0" r="8" fill="#00B4D8"/></g></g>
+  <g transform="translate(900,150)"><g class="cv-orbit-5"><circle cx="0" cy="0" r="8" fill="#90E0EF"/></g></g>
+  <g transform="translate(940,96)"><polygon class="cv-pulse-6" points="0,-9 2.5200000000000005,-2.5200000000000005 9,0 2.5200000000000005,2.5200000000000005 0,9 -2.5200000000000005,2.5200000000000005 -9,0 -2.5200000000000005,-2.5200000000000005" fill="#0077B6"/></g>
+  <g class="cv-reveal-1"><text x="600" y="168" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="72" font-weight="700" fill="#0A2540">project-name</text></g>
+  <g class="cv-reveal-2"><text x="600" y="214" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="26" fill="#5B7C99">A short one-line description of the project</text></g>
+  <g class="cv-shimmer-3"><rect x="520" y="236" width="160" height="8" rx="3" fill="#0077B6"/></g>
+</svg>

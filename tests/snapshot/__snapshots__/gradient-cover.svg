@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640">
+  <title>Your Name — gradient cover</title>
+  <desc>A hero cover on an animated gradient wash, muted by a palette scrim, with a revealing name + tagline, a floating star mark, a shimmering accent rule, and brand accent squares drifting in the margins.</desc>
+  <style>
+    .cv-reveal-1 {
+      animation: kf-cv-reveal-1 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0s 1 both;
+    }
+    @keyframes kf-cv-reveal-1 {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cv-reveal-2 {
+      animation: kf-cv-reveal-2 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.14s 1 both;
+    }
+    @keyframes kf-cv-reveal-2 {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cv-shimmer-3 {
+      animation: kf-cv-shimmer-3 7s ease-in-out infinite;
+    }
+    @keyframes kf-cv-shimmer-3 {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.78; }
+    }
+    .cv-drift-4 {
+      animation: kf-cv-drift-4 5s ease-in-out infinite 0s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-4 {
+      0%, 100% { transform: translateY(0) rotate(3deg); }
+      50% { transform: translateY(-10px) rotate(-3deg); }
+    }
+    .cv-pulse-5 {
+      animation: kf-cv-pulse-5 3s ease-in-out infinite 0s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-pulse-5 {
+      0%, 100% { transform: scale(0.94); }
+      50% { transform: scale(1.06); }
+    }
+    .cv-drift-6 {
+      animation: kf-cv-drift-6 3.60s ease-in-out infinite 0.09s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-6 {
+      0%, 100% { transform: translateY(0) rotate(-5deg); }
+      50% { transform: translateY(-15px) rotate(5deg); }
+    }
+    .cv-drift-7 {
+      animation: kf-cv-drift-7 4.06s ease-in-out infinite 0.46s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-7 {
+      0%, 100% { transform: translateY(0) rotate(-6deg); }
+      50% { transform: translateY(-10px) rotate(6deg); }
+    }
+    .cv-drift-8 {
+      animation: kf-cv-drift-8 4.91s ease-in-out infinite 0.33s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-8 {
+      0%, 100% { transform: translateY(0) rotate(3deg); }
+      50% { transform: translateY(-14px) rotate(-3deg); }
+    }
+    .cv-drift-9 {
+      animation: kf-cv-drift-9 3.02s ease-in-out infinite 0.36s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-9 {
+      0%, 100% { transform: translateY(0) rotate(4deg); }
+      50% { transform: translateY(-12px) rotate(-4deg); }
+    }
+    .cv-drift-10 {
+      animation: kf-cv-drift-10 5.05s ease-in-out infinite 0.32s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-10 {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
+    .cv-drift-11 {
+      animation: kf-cv-drift-11 4.67s ease-in-out infinite 0.63s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-11 {
+      0%, 100% { transform: translateY(0) rotate(11deg); }
+      50% { transform: translateY(-11px) rotate(-11deg); }
+    }
+    .cv-drift-12 {
+      animation: kf-cv-drift-12 4.38s ease-in-out infinite 0.80s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-12 {
+      0%, 100% { transform: translateY(0) rotate(-7deg); }
+      50% { transform: translateY(-10px) rotate(7deg); }
+    }
+    .cv-drift-13 {
+      animation: kf-cv-drift-13 5.02s ease-in-out infinite 0.22s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-13 {
+      0%, 100% { transform: translateY(0) rotate(-7deg); }
+      50% { transform: translateY(-14px) rotate(7deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
+  </style>
+  <defs>
+    <linearGradient id="gc-wash" x1="0.0468" y1="0.2887" x2="0.9532" y2="0.7113"><stop offset="0" stop-color="#FF9F1C"/><stop offset="0.55" stop-color="#FF5E5B"/><stop offset="1" stop-color="#FFD23F"/>
+      <animate attributeName="x1" values="-0.5;0.5;1;0.5;-0.5" dur="9s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="0.5;1.5;2;1.5;0.5" dur="9s" repeatCount="indefinite"/></linearGradient>
+    <pattern id="gc-dots" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.6" fill="#3A1F1A" fill-opacity="0.05"/>
+    </pattern>
+  </defs>
+<rect x="0" y="0" width="1280" height="640" fill="url(#gc-wash)"/>
+  <rect width="1280" height="640" fill="#FFF1E6" opacity="0.58"/>
+  <rect x="0" y="0" width="1280" height="640" fill="url(#gc-dots)"/>
+  <rect class="cv-drift-6" x="250" y="110" width="12" height="12" fill="#FF5E5B"/>
+<rect class="cv-drift-7" x="980" y="96" width="12" height="12" fill="#FF9F1C"/>
+<rect class="cv-drift-8" x="150" y="520" width="12" height="12" fill="#FFD23F"/>
+<rect class="cv-drift-9" x="700" y="560" width="12" height="12" fill="#FF5E5B"/>
+<rect class="cv-drift-10" x="1120" y="540" width="12" height="12" fill="#FF9F1C"/>
+<rect class="cv-drift-11" x="1180" y="300" width="12" height="12" fill="#FFD23F"/>
+<rect class="cv-drift-12" x="60" y="300" width="12" height="12" fill="#FF5E5B"/>
+<rect class="cv-drift-13" x="860" y="250" width="12" height="12" fill="#FF9F1C"/>
+  <g transform="translate(1066,168)"><g class="cv-drift-4"><polygon class="cv-pulse-5" points="0.00,-34.00 7.50,-12.99 29.44,-17.00 15.00,0.00 29.44,17.00 7.50,12.99 0.00,34.00 -7.50,12.99 -29.44,17.00 -15.00,0.00 -29.44,-17.00 -7.50,-12.99" fill="#FFE3CC"/></g></g>
+  <g class="cv-reveal-1"><text x="96" y="356" font-family="ui-sans-serif, system-ui, Segoe UI, sans-serif" font-size="116" font-weight="800" fill="#3A1F1A">Your Name</text></g>
+  <g class="cv-shimmer-3"><rect x="100" y="384" width="260" height="12" rx="3" fill="#FF5E5B"/></g>
+  <g class="cv-reveal-2"><text x="100" y="424" font-family="ui-sans-serif, system-ui, sans-serif" font-size="34" fill="#9C6B57">designer · builder · maker</text></g>
+</svg>

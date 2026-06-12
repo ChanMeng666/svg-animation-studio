@@ -135,8 +135,38 @@ HTTP request to your product
   → SSE-stream progress events back to caller
 ```
 
+## Decision log — theme & scene systems (2026-06)
+
+Three structural decisions taken when making chan-cover-level polish repeatable:
+
+1. **`composeScene` sits BELOW `composeSVG`, not around it.** A preset builds an
+   ordered layer list → `composeScene` returns `{ body, defs, style }` → the
+   preset still calls `composeSVG` to wrap the document. This keeps `composeSVG`
+   the single SVG assembler (Critical Rule 1) while letting the scene helper own
+   layer ordering + the static-vs-animated transform nesting (Gotcha 2). The
+   nesting is now mechanical, so presets stop hand-authoring the two-level `<g>`
+   that future sessions reliably got wrong.
+
+2. **`palettes.js` and `scene.js` are data/orchestration modules, NOT
+   primitives.** They emit no motion/shape/filter element, so they live beside
+   `easing.js`/`composer.js` and are edited directly — the gated
+   `/svg-add-primitive` protocol applies only to `lib/primitives/*`. Stated
+   explicitly so a future session doesn't mis-route a palette through the skill.
+
+3. **The new `decor` primitive category returns `{ defs, body }`** (not a plain
+   string like `shapes.*`). Each decor recipe pairs a `<pattern>`/`<gradient>`/
+   `<clipPath>` (defs) with the element referencing it (body); `composeScene`'s
+   `layer(body, { defs })` collects the defs. Named `decor` (not `scene`) to
+   avoid colliding with `lib/scene.js`.
+
+Theming: presets pull a named palette via `getPalette()` and reference accents by
+INDEX (`accents[0..2]`), never by colour name, so an asset retargets across all 8
+palettes. `chan-cover` stays frozen (the visual contract); `brand-cover` is the
+palette-driven successor future sessions fork.
+
 ## Sources
 
 - `docs/research-findings.md` — full survey of source projects and Claude Code
   capability map (2026-06)
 - Approved plan: `~/.claude/plans/svg-svg-svg-svg-reactive-thompson.md`
+- Approved plan (theme/scene overhaul): `~/.claude/plans/claude-code-skill-svg-d-github-reposito-fuzzy-bengio.md`

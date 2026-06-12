@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" width="240" height="120">
+  <title>Drifting accent field</title>
+  <desc>A dark canvas with a slowly parallax-drifting backdrop and seven small accent squares each floating on its own rhythm.</desc>
+  <style>
+    .cv-parallax-1 {
+      animation: kf-cv-parallax-1 12s ease-in-out infinite 0s;
+    }
+    @keyframes kf-cv-parallax-1 {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(10px); }
+    }
+    .cv-drift-2 {
+      animation: kf-cv-drift-2 2.83s ease-in-out infinite 0.70s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-2 {
+      0%, 100% { transform: translateY(0) rotate(8deg); }
+      50% { transform: translateY(-5px) rotate(-8deg); }
+    }
+    .cv-drift-3 {
+      animation: kf-cv-drift-3 4.05s ease-in-out infinite 0.24s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-3 {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-7px) rotate(1deg); }
+    }
+    .cv-drift-4 {
+      animation: kf-cv-drift-4 4.13s ease-in-out infinite 0.16s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-4 {
+      0%, 100% { transform: translateY(0) rotate(-4deg); }
+      50% { transform: translateY(-9px) rotate(4deg); }
+    }
+    .cv-drift-5 {
+      animation: kf-cv-drift-5 4.63s ease-in-out infinite 0.37s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-5 {
+      0%, 100% { transform: translateY(0) rotate(-5deg); }
+      50% { transform: translateY(-8px) rotate(5deg); }
+    }
+    .cv-drift-6 {
+      animation: kf-cv-drift-6 3.50s ease-in-out infinite 0.98s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-6 {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-8px) rotate(3deg); }
+    }
+    .cv-drift-7 {
+      animation: kf-cv-drift-7 3.39s ease-in-out infinite 0.14s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-7 {
+      0%, 100% { transform: translateY(0) rotate(-5deg); }
+      50% { transform: translateY(-10px) rotate(5deg); }
+    }
+    .cv-drift-8 {
+      animation: kf-cv-drift-8 3.17s ease-in-out infinite 0.76s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-8 {
+      0%, 100% { transform: translateY(0) rotate(1deg); }
+      50% { transform: translateY(-7px) rotate(-1deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
+  </style>
+<g class="cv-parallax-1"><rect x="-10" y="0" width="260" height="120" fill="#0E1116"/></g>
+  <rect class="cv-drift-2" x="28" y="24" width="8" height="8" fill="#58A6FF"/>
+<rect class="cv-drift-3" x="92" y="76" width="8" height="8" fill="#BC8CFF"/>
+<rect class="cv-drift-4" x="150" y="30" width="8" height="8" fill="#3FB950"/>
+<rect class="cv-drift-5" x="200" y="84" width="8" height="8" fill="#58A6FF"/>
+<rect class="cv-drift-6" x="64" y="52" width="8" height="8" fill="#BC8CFF"/>
+<rect class="cv-drift-7" x="176" y="58" width="8" height="8" fill="#3FB950"/>
+<rect class="cv-drift-8" x="116" y="18" width="8" height="8" fill="#58A6FF"/>
+</svg>

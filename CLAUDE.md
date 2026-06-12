@@ -24,9 +24,11 @@ primitives that came before.
 | Path | Purpose |
 |---|---|
 | `lib/` | Deterministic code. Single source of truth. Skills call this; never duplicate. |
-| `lib/primitives/{shapes,motion,filters}.js` | Reusable building blocks. Add via `/svg-add-primitive`, never by hand. |
+| `lib/primitives/{shapes,motion,filters,decor}.js` | Reusable building blocks. Add via `/svg-add-primitive`, never by hand. |
 | `lib/presets/*.js` | Named animation templates (e.g. `claude-jumping`). Each composes primitives. |
 | `lib/composer.js` | The only allowed way to assemble a final `<svg>` string. |
+| `lib/scene.js` | Layer/scene composer (sits BELOW composeSVG). Handles the static-vs-animated transform nesting. NOT a primitive — edit directly. |
+| `lib/palettes.js` | Curated named palettes (theme system). NOT a primitive — edit directly. |
 | `lib/easing.js` | Named easing curves for both CSS and SMIL. |
 | `docs/` | Permanent design memory. Open on demand. |
 | `playground/` | Next.js preview server. `/api/svg?preset=NAME` returns SVG. |
@@ -43,7 +45,7 @@ primitives that came before.
 > Names only. Full signatures live in `docs/lib-api.md`. Open that file when
 > composing a preset or extending a primitive.
 
-**`lib/primitives/motion.js`** — animation kinematics (15)
+**`lib/primitives/motion.js`** — animation kinematics (21)
 - `createJump` — squash-and-stretch jump with synced shadow hook
 - `createBob` — gentle vertical idle loop
 - `createTalk` — mouth open/close via Y-scale
@@ -59,8 +61,14 @@ primitives that came before.
 - `createShimmer` — slow opacity shimmer for a single restrained accent
 - `createDrift` — continuous in-place float (bob + optional rotate wobble)
 - `createSweep` — periodic horizontal gleam sweep (holds off-screen, then crosses)
+- `createSpin` — continuous rotation around self (loaders/badges/gears)
+- `createPulse` — gentle scale "breathing" loop (logos/idle marks)
+- `createRipple` — expanding-and-fading ring (sonar/ripple); generalises soundWaveExpand
+- `createOrbit` — orbital sweep around self, element stays upright
+- `createParallaxDrift` — slow one-axis layer drift for scene depth
+- `createParticleStagger` — seeded-deterministic field of N drifting accents → `{items, css}`
 
-**`lib/primitives/shapes.js`** — reusable geometry (11)
+**`lib/primitives/shapes.js`** — reusable geometry (16)
 - `createGroundShadow` — `<ellipse>` shadow with class hook
 - `createPixelCharacter` — Claude-style pixel-art body group
 - `createCodexCharacter` — Codex-style cloud body group (pose: jumping/speaking)
@@ -72,6 +80,11 @@ primitives that came before.
 - `createSoundWaveArc` — quadratic-bezier arc for sound waves
 - `createSoundWaveArcRaw` — arc with caller-provided `d` (for parity)
 - `createCharacterMouth` — mouth rect with class hook
+- `createAccentSquare` — one brand pixel-square accent
+- `createBadgeShape` — rounded-rect / pill badge container
+- `createStar` — N-point star / sparkle `<polygon>`
+- `createBurst` — 4-point diamond-spike sparkle `<polygon>`
+- `createPanel` — decorative card/panel, optional dashed stroke
 
 **`lib/primitives/filters.js`** — SVG filter factories (4)
 - `createDropShadow` — `feDropShadow` outer shadow
@@ -79,9 +92,22 @@ primitives that came before.
 - `createSoftGlow` — outer glow for sound waves
 - `createNoteGlow` — softer wider glow for music notes
 
+**`lib/primitives/decor.js`** — composite backdrops, return `{defs, body}` (3)
+- `createDotGridBackground` — low-opacity dotted `<pattern>` over a rect
+- `createGradientWash` — full-canvas gradient fill (optional SMIL `animate`)
+- `createTextGleamClip` — clipPath (path OR `clipContent`) + swept gleam rect
+
 **`lib/easing.js`**
-- `cssEasing` — named CSS cubic-bezier strings
-- `smilSplines` — named SMIL keySplines strings
+- `cssEasing` — named CSS cubic-bezier strings (+ `elastic`/`anticipate`/`bouncyCubic`)
+- `smilSplines` — named SMIL keySplines strings (overshoot curves are CSS-only)
+
+**`lib/palettes.js`** — theme system (8 palettes: caldera, mono, midnight, sunset, nature, neon, pastel, ocean)
+- `getPalette(name?)` — frozen `{bg,bgAlt,ink,muted,accents[],line,dark}`; throws on unknown
+- `listPalettes()` — `[{name,category,label,dark}]` for the playground switcher
+
+**`lib/scene.js`** — layer composer (sits below composeSVG)
+- `composeScene({layers, defs, style})` — assemble ordered layers → `{body, defs, style}`; auto-nests static `transform` + animated `className` (Gotcha 2)
+- `layer(content, {transform, className, clip, filter, opacity, defs})` — layer descriptor
 
 **`lib/composer.js`**
 - `composeSVG({viewBox, width, height, style, defs, body, reducedMotion=true})` — assemble final SVG; `reducedMotion` (default on) auto-appends the `prefers-reduced-motion` fallback when there's a `<style>`
@@ -136,8 +162,9 @@ For complex multi-asset jobs ("brand kit"), see
    guarantee.
 
 2. **New primitives go through `/svg-add-primitive`.** Never hand-edit
-   `lib/primitives/*.js` directly. The skill enforces JSDoc + at least one
-   preset using the new primitive + snapshot test pass.
+   `lib/primitives/*.js` (motion/shapes/filters/decor) directly. The skill
+   enforces JSDoc + a consuming preset + snapshot pass. `lib/palettes.js`,
+   `lib/scene.js`, `lib/easing.js` are NOT primitives — edit them directly.
 
 3. **Snapshot tests gate every `lib/` change.** Run `npm test` after edits.
    If a snapshot legitimately needs to change, run `npm run snapshot:update`
@@ -159,6 +186,7 @@ For complex multi-asset jobs ("brand kit"), see
 - Architecture / design question → `docs/ARCHITECTURE.md`
 - Why a design choice was made → `docs/research-findings.md`
 - How to use a specific primitive → `docs/lib-api.md`
+- How to compose a cover / banner / logo / loader at quality → `.claude/skills/svg-animate/references/preset-cookbook.md` (palettes + `composeScene` + which preset to fork)
 - What an existing preset does → read its `lib/presets/*.js` (~30 lines each)
 - How to design a new skill → `docs/sprint-2-skills.md`
 - How to design a new subagent → `docs/sprint-3-subagents.md`

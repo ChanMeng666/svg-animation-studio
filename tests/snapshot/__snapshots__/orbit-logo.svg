@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <title>Orbit logo mark</title>
+  <desc>A spinning dashed ring, a breathing star at the center, and an accent dot orbiting the ring.</desc>
+  <style>
+    .cv-spin-1 {
+      animation: kf-cv-spin-1 9s linear infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-spin-1 {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .cv-pulse-2 {
+      animation: kf-cv-pulse-2 3s ease-in-out infinite 0s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-pulse-2 {
+      0%, 100% { transform: scale(0.92); }
+      50% { transform: scale(1.08); }
+    }
+    .cv-orbit-3 {
+      animation: kf-cv-orbit-3 4.5s linear infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-orbit-3 {
+      from { transform: rotate(0deg) translateX(70px) rotate(0deg); }
+      to   { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
+  </style>
+<g class="cv-spin-1"><circle cx="100" cy="100" r="70" fill="none" stroke="#5B5B59" stroke-width="3" stroke-dasharray="6 12" stroke-linecap="round"/></g>
+  <polygon class="cv-pulse-2" points="100.00,70.00 107.64,89.48 128.53,90.73 112.36,104.02 117.63,124.27 100.00,113.00 82.37,124.27 87.64,104.02 71.47,90.73 92.36,89.48" fill="#524AE9"/>
+  <g class="cv-orbit-3"><circle cx="100" cy="100" r="9" fill="#FC5000"/></g>
+</svg>

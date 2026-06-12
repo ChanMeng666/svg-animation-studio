@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <title>Spinning award badge</title>
+  <desc>A gently pulsing rounded-square seal with a slowly spinning cream star and a twinkling gold sparkle in the corner.</desc>
+  <style>
+    .cv-pulse-1 {
+      animation: kf-cv-pulse-1 2.4s ease-in-out infinite 0s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-pulse-1 {
+      0%, 100% { transform: scale(0.98); }
+      50% { transform: scale(1.02); }
+    }
+    .cv-spin-2 {
+      animation: kf-cv-spin-2 6s linear infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-spin-2 {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .cv-pulse-3 {
+      animation: kf-cv-pulse-3 1.6s ease-in-out infinite 0s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-pulse-3 {
+      0%, 100% { transform: scale(0.5); }
+      50% { transform: scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
+  </style>
+<rect class="cv-pulse-1" x="4" y="4" width="72" height="72" rx="20" fill="#524AE9" stroke="#070607" stroke-width="2"/>
+  <polygon class="cv-spin-2" points="40.00,20.00 45.29,32.72 59.02,33.82 48.56,42.78 51.76,56.18 40.00,49.00 28.24,56.18 31.44,42.78 20.98,33.82 34.71,32.72" fill="#F7F6F2"/>
+  <polygon class="cv-pulse-3" points="62,12 63.68,16.32 68,18 63.68,19.68 62,24 60.32,19.68 56,18 60.32,16.32" fill="#F5F28E"/>
+</svg>

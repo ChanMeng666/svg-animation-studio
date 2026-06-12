@@ -90,8 +90,29 @@ same-origin — `setContent` with a `file://` src is blocked and shows a false
 broken-image). Check `img.naturalWidth > 0`, then screenshot. See the `<img>`-mode
 step in `svg-verify`.
 
-## Reusable composition recipes (from `chan-cover`)
+## Reusable composition recipes (now promoted to lib primitives)
 
-- **Dot-grid background:** a `<pattern>` of one small low-opacity `<circle>`, filled over the canvas rect.
-- **Floating accents:** scatter small `<rect>` squares in the margins, each on its own `createDrift({ amplitude, rotate, delay })` with staggered durations/delays.
-- **Text gleam:** a `<clipPath>` of the (outlined) text + a soft-gradient rect swept across it with `createSweep`, clipped so the shine only shows on the letters.
+These chan-cover recipes are no longer hand-authored — they are `lib/` primitives.
+Compose them via `composeScene` (`lib/scene.js`), which also handles the Gotcha-2
+nesting above automatically:
+
+- **Dot-grid background:** `decor.createDotGridBackground({ id, width, height, color, opacity })` → `{defs, body}`.
+- **Floating accents:** `motion.createParticleStagger({ count, seed })` (seeded-deterministic) → map `items[i].className` onto `shapes.createAccentSquare` i. (Replaces the hand-tuned drift array.)
+- **Text gleam:** `decor.createTextGleamClip({ pathD | clipContent, sweepClassName })` paired with `motion.createSweep` — clips a soft-gradient sweep to the (outlined `<path>` OR live `<text>`) so the shine shows only on the letters.
+
+## Gotcha 6 — Animated gradients: SMIL works, but it ignores reduced-motion
+
+`decor.createGradientWash({ animate: true })` animates the gradient via SMIL
+`<animate>` on `x1`/`x2`. SMIL **does** run in `<img>` mode (see the table above),
+so animated-gradient banners are viable. BUT the `@media (prefers-reduced-motion)`
+fallback only stops CSS `animation` — it does NOT stop SMIL. Use an animated wash
+only where continuous subtle motion is acceptable; prefer a static wash + CSS
+motion on overlay elements when reduced-motion fidelity matters.
+
+## Gotcha 7 — Don't stagger via CSS custom properties (`--i`) in `<img>` mode
+
+A common web trick is per-element `style="--i: 3"` + `animation-delay: calc(var(--i) * 0.1s)`.
+In an `<img>`-embedded SVG (a restricted document) this is unreliable across
+renderers (notably GitHub's). **Bake the stagger at build time instead** — emit an
+explicit `animation-delay` per generated class. `motion.createParticleStagger` does
+exactly this (and seeds the variation deterministically so snapshots stay stable).

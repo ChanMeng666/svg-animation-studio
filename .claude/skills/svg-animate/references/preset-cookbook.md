@@ -15,6 +15,14 @@
 | "soundwave", "audio pulse" | `motion.createSoundWaveExpand` × 3 staggered | wrap a path in a `<g class="...">` |
 | "music notes floating up" | `motion.createFloatingNote` × 3 staggered | `shapes.createMusicalNote({kind: eighth/quarter/double})` |
 | "voice rings", "aura" | `motion.createVoiceRing` × 2 | use light strokes, low opacity |
+| "spinning", "rotating", "loading wheel", "gear" | `motion.createSpin` | give the target an asymmetric shape (dashed ring) or the spin won't read |
+| "pulsing", "breathing", "heartbeat", "throb" | `motion.createPulse` | stagger several for a dot-loader |
+| "ripple", "sonar", "radar ping", "expanding rings" | `motion.createRipple` × 3 staggered | concentric `<circle>` rings |
+| "orbiting", "satellite", "dot circling" | `motion.createOrbit` | place the element AT the orbit centre |
+| "parallax", "depth", "slow background drift" | `motion.createParallaxDrift` | wrap an over-wide layer so no edge shows |
+| "drifting particles", "floating squares/confetti", "scattered accents" | `motion.createParticleStagger` | map `items[i].className` onto `shapes.createAccentSquare` i |
+| "gleam", "sheen", "shine sweeping across text" | `decor.createTextGleamClip` + `motion.createSweep` | clip to a `<path>` (pathD) or a `<text>` (clipContent) |
+| "reveal in", "fade up", "staggered entrance" | `motion.createRevealUp` (staggered delays) | author base state = final/visible frame |
 
 ## Style cue → shapes / filters
 
@@ -26,6 +34,46 @@
 | "drop shadow", "lifted" | `filters.createDropShadow` |
 | "inner depth", "concave" | `filters.createInnerDepth` |
 | "glowing", "neon", "shimmer" | `filters.createSoftGlow` (for accents) or `filters.createNoteGlow` (wider, softer) |
+| "star", "sparkle", "seal", "award" | `shapes.createStar` (n-point) or `shapes.createBurst` (4-point sparkle) |
+| "badge", "pill", "chip", "shield" | `shapes.createBadgeShape` |
+| "card", "panel", "framed", "dashed border" | `shapes.createPanel({ dashed: true })` |
+| "brand square", "pixel accent", "confetti dot" | `shapes.createAccentSquare` (pair with `createParticleStagger`) |
+| "dot-grid background", "subtle texture" | `decor.createDotGridBackground` |
+| "gradient wash", "animated gradient banner" | `decor.createGradientWash({ animate: true })` (SMIL — runs as `<img>`) |
+
+## Palette / theme workflow (use this for any branded asset)
+
+Don't hardcode hex. Pull a named palette and reference accents by index:
+
+```js
+const { getPalette } = require('../palettes');
+const pal = getPalette(opts.palette || 'caldera');   // bg, bgAlt, ink, muted, accents[], line, dark
+// pal.bg (canvas) · pal.ink (text/marks) · pal.muted (secondary) · pal.accents[0..2] (ramp)
+```
+
+8 palettes: `caldera` (the chan-cover brand), `mono`, `midnight`, `sunset`,
+`nature`, `neon`, `pastel`, `ocean`. A palette-driven preset retargets to any
+brand/mood via `opts.palette` — and the playground palette switcher previews it.
+
+## Scene / layer workflow (use this for any multi-layer composition)
+
+`composeScene` orders layers back-to-front AND solves the static-vs-animated
+transform split (Gotcha 2) for you — never hand-nest `<g>` for that again:
+
+```js
+const { composeScene, layer } = require('../scene');
+const bg = decor.createDotGridBackground({ id, width, height, color: pal.ink });
+const scene = composeScene({
+  layers: [
+    layer(`<rect width=".." height=".." fill="${pal.bg}"/>`),
+    layer(bg.body, { defs: bg.defs }),                       // a {defs,body} decor primitive
+    layer(titleText, { className: reveal.className }),       // animated class only
+    layer(logo, { transform: 'translate(x,y)', className: float.className }), // auto-nests!
+  ],
+  style: [reveal.css, float.css].join('\n'),
+});
+return composeSVG({ viewBox, width, height, style: scene.style, defs: scene.defs, body: scene.body, title, desc });
+```
 
 ## Composition recipes (proven patterns from existing presets)
 
@@ -58,16 +106,41 @@
 - `motion.createWaveArm` × 2 for arms
 - See `lib/presets/codexJumping.js`
 
+### Recipe: Brand / personal cover (the chan-cover quality bar, made repeatable)
+- Palette-driven via `getPalette`, composed via `composeScene`.
+- Backdrop: `decor.createDotGridBackground` + drifting `shapes.createAccentSquare` × N driven by `motion.createParticleStagger`.
+- Left copy: name/tagline/positioning each on a `motion.createRevealUp` (staggered delays); accent rule on `motion.createShimmer`.
+- Headline gleam: `decor.createTextGleamClip({ clipContent: <duplicate of the name text> })` + `motion.createSweep`.
+- Right card: `shapes.createPanel({ dashed: true })` holding a `shapes.createStar` on `motion.createDrift` + `createPulse`, with an orbiting dot (`motion.createOrbit`).
+- **Start by forking `lib/presets/brandCover.js`** — it is the template. (`chan-cover` is the frozen reference; don't edit it.)
+
+### Recipe: Repo / project hero banner
+- Wide short viewBox (~1200×300/360). `decor.createGradientWash` (optionally `animate: true`) + `decor.createDotGridBackground`.
+- Title + tagline in SYSTEM fonts on `motion.createRevealUp`; accent underline on `motion.createShimmer`.
+- Fork `lib/presets/heroStrip.js` (left-aligned) or `repoHero.js` (centered) or `gradientCover.js` (full cover).
+
+### Recipe: Animated logo / badge
+- `shapes.createBadgeShape` / `createStar` / `createPanel` + `motion.createSpin` / `createPulse` / `createOrbit`.
+- Fork `lib/presets/orbitLogo.js`, `pulseMonoLogo.js`, or `spinBadge.js`.
+
+### Recipe: Loader / spinner
+- `motion.createPulse` × 3 staggered (dots), `motion.createRipple` × 3 (sonar), or `createSpin` + `createOrbit`.
+- Fork `lib/presets/dotLoader.js`, `rippleLoader.js`, or `orbitSpinner.js`.
+
 ## When no recipe fits
 
 Three signs you need to stop and request a primitive (`/svg-add-primitive`):
 
-1. The motion has a verb not in the table above (e.g., "drift", "shimmer",
-   "ripple", "spin orbital", "flicker").
-2. The geometry isn't pixel-rectangle and isn't gradient-cloud and isn't a
-   simple shape (musical note, sound wave) — e.g., a star, a polygon, a heart.
+1. The motion has a verb not in the (now much larger) table above — e.g.,
+   "flicker", "morph", "type out", "follow a path", "wobble jelly".
+2. The geometry isn't covered by the shapes lib — e.g., a heart, a hexagon
+   grid, a custom logo silhouette (those need an outlined `<path>`).
 3. The filter quality requires something beyond drop-shadow / inner-depth /
    glow (e.g., displacement, turbulence, color matrix).
+
+(Note: "drift", "shimmer", "ripple", "spin", "orbit", "pulse", "parallax",
+"star", "badge", "panel", "gleam", "gradient wash" and "dot-grid" all EXIST
+now — check the tables above before requesting a primitive.)
 
 In all three cases, the cleanest path is to ask the user to add the primitive,
 then come back. Inline primitives violate the protocol and produce a system
@@ -75,6 +148,10 @@ that doesn't compound.
 
 ## Color / theming notes
 
+- **New presets: don't hardcode hex — use `getPalette` (see the palette workflow
+  above).** Reference accents by index so the asset retargets across palettes.
+  The legacy `claude-*`/`codex-*` presets predate the palette system and keep
+  their literal colors below; that's fine, leave them.
 - Claude orange: `#E07C4C` — used by `claude-*` presets
 - Codex gradient: `#9333EA → #7C3AED → #5B6CF0 → #3B9AEE → #22D3EE` (5 stops)
 - Eye black: `#000000` for pixel, `url(#cx-eye-grad)` (white-to-grey radial) for codex

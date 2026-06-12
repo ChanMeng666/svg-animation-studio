@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" width="120" height="40">
+  <title>Loading — pulsing dots</title>
+  <desc>Three violet dots pulsing in a staggered left-to-right wave.</desc>
+  <style>
+    .cv-pulse-1 {
+      animation: kf-cv-pulse-1 2.4s ease-in-out infinite 0s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-pulse-1 {
+      0%, 100% { transform: scale(0.6); }
+      50% { transform: scale(1); }
+    }
+    .cv-pulse-2 {
+      animation: kf-cv-pulse-2 2.4s ease-in-out infinite 0.2s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-pulse-2 {
+      0%, 100% { transform: scale(0.6); }
+      50% { transform: scale(1); }
+    }
+    .cv-pulse-3 {
+      animation: kf-cv-pulse-3 2.4s ease-in-out infinite 0.4s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-pulse-3 {
+      0%, 100% { transform: scale(0.6); }
+      50% { transform: scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
+  </style>
+<circle class="cv-pulse-1" cx="24" cy="20" r="10" fill="#524AE9"/>
+  <circle class="cv-pulse-2" cx="60" cy="20" r="10" fill="#524AE9"/>
+  <circle class="cv-pulse-3" cx="96" cy="20" r="10" fill="#524AE9"/>
+</svg>

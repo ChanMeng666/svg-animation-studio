@@ -66,6 +66,19 @@ For inspiration mapping ("user wants X → reach for Y"), open
 
 For the full lib API (signatures + defaults), open `references/lib-api.md`.
 
+**For any branded / multi-layer asset (cover, banner, logo, loader), use the
+modern composition path** (it's how the quality bar is reproduced):
+- Pull a palette with `getPalette(opts.palette || '<default>')` from `lib/palettes.js`
+  and reference accents by index (`pal.accents[0]`) — never hardcode hex.
+- Build the body with `composeScene({ layers, defs, style })` from `lib/scene.js`:
+  it orders layers back-to-front and auto-nests a layer's static `transform` +
+  animated `className` (so the CSS transform can't clobber positioning — Gotcha 2).
+- Then fork the closest family template: `brandCover.js` / `gradientCover.js`
+  (covers), `heroStrip.js` / `repoHero.js` (banners), `orbitLogo.js` /
+  `pulseMonoLogo.js` / `spinBadge.js` (logos/badges), `dotLoader.js` /
+  `rippleLoader.js` / `bounceChar.js` (loaders/characters). `chan-cover` is the
+  FROZEN reference — fork `brand-cover` instead.
+
 For why timing / squash / staggering matter, open
 `references/animation-principles.md`. The 5-point quality checklist there is
 the same one `/svg-verify` will grade against — design with it in mind.

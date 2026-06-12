@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <title>Loading — star ring</title>
+  <desc>Five orange stars evenly spaced on a ring, each twinkling on a staggered rhythm so the sparkle travels around the circle.</desc>
+  <style>
+    .cv-pulse-1 {
+      animation: kf-cv-pulse-1 1.4s ease-in-out infinite 0s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-pulse-1 {
+      0%, 100% { transform: scale(0.5); }
+      50% { transform: scale(1); }
+    }
+    .cv-pulse-2 {
+      animation: kf-cv-pulse-2 1.4s ease-in-out infinite 0.2s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-pulse-2 {
+      0%, 100% { transform: scale(0.5); }
+      50% { transform: scale(1); }
+    }
+    .cv-pulse-3 {
+      animation: kf-cv-pulse-3 1.4s ease-in-out infinite 0.4s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-pulse-3 {
+      0%, 100% { transform: scale(0.5); }
+      50% { transform: scale(1); }
+    }
+    .cv-pulse-4 {
+      animation: kf-cv-pulse-4 1.4s ease-in-out infinite 0.6s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-pulse-4 {
+      0%, 100% { transform: scale(0.5); }
+      50% { transform: scale(1); }
+    }
+    .cv-pulse-5 {
+      animation: kf-cv-pulse-5 1.4s ease-in-out infinite 0.8s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-pulse-5 {
+      0%, 100% { transform: scale(0.5); }
+      50% { transform: scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
+  </style>
+<polygon class="cv-pulse-1" points="50.00,9.00 52.35,14.76 58.56,15.22 53.80,19.24 55.29,25.28 50.00,22.00 44.71,25.28 46.20,19.24 41.44,15.22 47.65,14.76" fill="#FF9F1C"/>
+  <polygon class="cv-pulse-2" points="80.43,31.11 82.78,36.87 88.99,37.33 84.23,41.35 85.72,47.39 80.43,44.11 75.14,47.39 76.63,41.35 71.87,37.33 78.08,36.87" fill="#FF9F1C"/>
+  <polygon class="cv-pulse-3" points="68.81,66.89 71.16,72.65 77.37,73.11 72.61,77.13 74.10,83.17 68.81,79.89 63.52,83.17 65.01,77.13 60.25,73.11 66.46,72.65" fill="#FF9F1C"/>
+  <polygon class="cv-pulse-4" points="31.19,66.89 33.54,72.65 39.75,73.11 34.99,77.13 36.48,83.17 31.19,79.89 25.90,83.17 27.39,77.13 22.63,73.11 28.84,72.65" fill="#FF9F1C"/>
+  <polygon class="cv-pulse-5" points="19.57,31.11 21.92,36.87 28.13,37.33 23.37,41.35 24.86,47.39 19.57,44.11 14.28,47.39 15.77,41.35 11.01,37.33 17.22,36.87" fill="#FF9F1C"/>
+</svg>

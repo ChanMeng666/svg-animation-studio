@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300">
+  <title>your-project — hero banner</title>
+  <desc>A wide project hero banner: a diagonal gradient wash, a parallax-drifting dot grid, the project title and tagline revealing in, a shimmering accent underline, and brand accent squares drifting in the right margin.</desc>
+  <style>
+    .cv-parallax-1 {
+      animation: kf-cv-parallax-1 12s ease-in-out infinite 0s;
+    }
+    @keyframes kf-cv-parallax-1 {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(14px); }
+    }
+    .cv-reveal-2 {
+      animation: kf-cv-reveal-2 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0s 1 both;
+    }
+    @keyframes kf-cv-reveal-2 {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cv-reveal-3 {
+      animation: kf-cv-reveal-3 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.12s 1 both;
+    }
+    @keyframes kf-cv-reveal-3 {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cv-shimmer-4 {
+      animation: kf-cv-shimmer-4 7s ease-in-out infinite;
+    }
+    @keyframes kf-cv-shimmer-4 {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.78; }
+    }
+    .cv-drift-5 {
+      animation: kf-cv-drift-5 3.49s ease-in-out infinite 0.94s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-5 {
+      0%, 100% { transform: translateY(0) rotate(2deg); }
+      50% { transform: translateY(-7px) rotate(-2deg); }
+    }
+    .cv-drift-6 {
+      animation: kf-cv-drift-6 3.17s ease-in-out infinite 0.64s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-6 {
+      0%, 100% { transform: translateY(0) rotate(4deg); }
+      50% { transform: translateY(-7px) rotate(-4deg); }
+    }
+    .cv-drift-7 {
+      animation: kf-cv-drift-7 4.13s ease-in-out infinite 0.93s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-7 {
+      0%, 100% { transform: translateY(0) rotate(-9deg); }
+      50% { transform: translateY(-11px) rotate(9deg); }
+    }
+    .cv-drift-8 {
+      animation: kf-cv-drift-8 3.58s ease-in-out infinite 0.65s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-8 {
+      0%, 100% { transform: translateY(0) rotate(5deg); }
+      50% { transform: translateY(-10px) rotate(-5deg); }
+    }
+    .cv-drift-9 {
+      animation: kf-cv-drift-9 4.08s ease-in-out infinite 0.24s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-9 {
+      0%, 100% { transform: translateY(0) rotate(10deg); }
+      50% { transform: translateY(-12px) rotate(-10deg); }
+    }
+    .cv-drift-10 {
+      animation: kf-cv-drift-10 3.53s ease-in-out infinite 0.43s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-10 {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-12px) rotate(2deg); }
+    }
+    .cv-drift-11 {
+      animation: kf-cv-drift-11 3.36s ease-in-out infinite 0.05s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-11 {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-8px) rotate(2deg); }
+    }
+    .cv-drift-12 {
+      animation: kf-cv-drift-12 3.45s ease-in-out infinite 0.17s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-12 {
+      0%, 100% { transform: translateY(0) rotate(-4deg); }
+      50% { transform: translateY(-9px) rotate(4deg); }
+    }
+    .cv-drift-13 {
+      animation: kf-cv-drift-13 4.26s ease-in-out infinite 0.53s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-13 {
+      0%, 100% { transform: translateY(0) rotate(-4deg); }
+      50% { transform: translateY(-11px) rotate(4deg); }
+    }
+    .cv-drift-14 {
+      animation: kf-cv-drift-14 3.63s ease-in-out infinite 0.75s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-14 {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-8px) rotate(2deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
+  </style>
+  <defs>
+    <linearGradient id="hs-wash" x1="0.0302" y1="0.3290" x2="0.9698" y2="0.6710"><stop offset="0" stop-color="#0E1116"/><stop offset="1" stop-color="#161B22"/></linearGradient>
+    <pattern id="hs-dots" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.6" fill="#E6EDF3" fill-opacity="0.05"/>
+    </pattern>
+  </defs>
+<rect x="0" y="0" width="1200" height="300" fill="url(#hs-wash)"/>
+  <g class="cv-parallax-1"><rect x="-20" y="0" width="1240" height="300" fill="url(#hs-dots)"/></g>
+  <g class="cv-reveal-2"><text x="64" y="150" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="68" font-weight="700" fill="#E6EDF3">your-project</text></g>
+  <g class="cv-reveal-3"><text x="66" y="196" font-family="ui-sans-serif, system-ui, sans-serif" font-size="26" fill="#8B949E">ship beautiful things</text></g>
+  <g class="cv-shimmer-4"><rect x="66" y="168" width="200" height="10" rx="3" fill="#58A6FF"/></g>
+  <rect class="cv-drift-5" x="720" y="60" width="11" height="11" fill="#58A6FF"/>
+<rect class="cv-drift-6" x="812" y="220" width="11" height="11" fill="#BC8CFF"/>
+<rect class="cv-drift-7" x="880" y="120" width="11" height="11" fill="#3FB950"/>
+<rect class="cv-drift-8" x="956" y="250" width="11" height="11" fill="#58A6FF"/>
+<rect class="cv-drift-9" x="1010" y="48" width="11" height="11" fill="#BC8CFF"/>
+<rect class="cv-drift-10" x="1066" y="188" width="11" height="11" fill="#3FB950"/>
+<rect class="cv-drift-11" x="1108" y="92" width="11" height="11" fill="#58A6FF"/>
+<rect class="cv-drift-12" x="1150" y="240" width="11" height="11" fill="#BC8CFF"/>
+<rect class="cv-drift-13" x="760" y="150" width="11" height="11" fill="#3FB950"/>
+<rect class="cv-drift-14" x="1160" y="40" width="11" height="11" fill="#58A6FF"/>
+</svg>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640">
+  <title>Your Name — animated brand cover</title>
+  <desc>Animated brand cover for Your Name: « Subtraction for life, addition for thought. » A dot-grid canvas with drifting brand squares, a staggered headline reveal, a glare sweep across the name, a shimmering accent rule, and a dashed card holding a floating star mark with an orbiting accent dot.</desc>
+  <style>
+    .cv-reveal-8 {
+      animation: kf-cv-reveal-8 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0s 1 both;
+    }
+    @keyframes kf-cv-reveal-8 {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cv-reveal-9 {
+      animation: kf-cv-reveal-9 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.12s 1 both;
+    }
+    @keyframes kf-cv-reveal-9 {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cv-reveal-10 {
+      animation: kf-cv-reveal-10 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.24s 1 both;
+    }
+    @keyframes kf-cv-reveal-10 {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cv-reveal-11 {
+      animation: kf-cv-reveal-11 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.36s 1 both;
+    }
+    @keyframes kf-cv-reveal-11 {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cv-shimmer-12 {
+      animation: kf-cv-shimmer-12 7s ease-in-out infinite;
+    }
+    @keyframes kf-cv-shimmer-12 {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.72; }
+    }
+    .cv-sweep-13 {
+      animation: kf-cv-sweep-13 5.5s linear infinite 1.2s;
+    }
+    @keyframes kf-cv-sweep-13 {
+      0%, 58% { transform: translateX(0); }
+      100% { transform: translateX(1000px); }
+    }
+    .cv-drift-14 {
+      animation: kf-cv-drift-14 4s ease-in-out infinite 0s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-14 {
+      0%, 100% { transform: translateY(0) rotate(1.5deg); }
+      50% { transform: translateY(-7px) rotate(-1.5deg); }
+    }
+    .cv-pulse-15 {
+      animation: kf-cv-pulse-15 3.4s ease-in-out infinite 0s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-pulse-15 {
+      0%, 100% { transform: scale(0.95); }
+      50% { transform: scale(1.05); }
+    }
+    .cv-orbit-16 {
+      animation: kf-cv-orbit-16 6s linear infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-orbit-16 {
+      from { transform: rotate(0deg) translateX(92px) rotate(0deg); }
+      to   { transform: rotate(360deg) translateX(92px) rotate(-360deg); }
+    }
+    .cv-shimmer-17 {
+      animation: kf-cv-shimmer-17 5s ease-in-out infinite;
+    }
+    @keyframes kf-cv-shimmer-17 {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+    .cv-drift-1 {
+      animation: kf-cv-drift-1 4.03s ease-in-out infinite 0.59s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-1 {
+      0%, 100% { transform: translateY(0) rotate(2deg); }
+      50% { transform: translateY(-9px) rotate(-2deg); }
+    }
+    .cv-drift-2 {
+      animation: kf-cv-drift-2 4.84s ease-in-out infinite 0.53s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-2 {
+      0%, 100% { transform: translateY(0) rotate(-7deg); }
+      50% { transform: translateY(-9px) rotate(7deg); }
+    }
+    .cv-drift-3 {
+      animation: kf-cv-drift-3 4.26s ease-in-out infinite 0.84s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-3 {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-9px); }
+    }
+    .cv-drift-4 {
+      animation: kf-cv-drift-4 3.81s ease-in-out infinite 0.16s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-4 {
+      0%, 100% { transform: translateY(0) rotate(3deg); }
+      50% { transform: translateY(-10px) rotate(-3deg); }
+    }
+    .cv-drift-5 {
+      animation: kf-cv-drift-5 3.23s ease-in-out infinite 0.38s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-5 {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-8px) rotate(2deg); }
+    }
+    .cv-drift-6 {
+      animation: kf-cv-drift-6 4.20s ease-in-out infinite 0.58s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-6 {
+      0%, 100% { transform: translateY(0) rotate(2deg); }
+      50% { transform: translateY(-7px) rotate(-2deg); }
+    }
+    .cv-drift-7 {
+      animation: kf-cv-drift-7 3.80s ease-in-out infinite 0.77s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-drift-7 {
+      0%, 100% { transform: translateY(0) rotate(5deg); }
+      50% { transform: translateY(-11px) rotate(-5deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
+  </style>
+  <defs>
+    <pattern id="bc-dots" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.6" fill="#070607" fill-opacity="0.06"/>
+    </pattern>
+    <linearGradient id="bc-gleam-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="bc-gleam-clip"><text x="96" y="300" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, sans-serif" font-size="120" font-weight="800">Your Name</text></clipPath>
+  </defs>
+<rect width="1280" height="640" fill="#E2E2DF"/>
+  <rect x="0" y="0" width="1280" height="640" fill="url(#bc-dots)"/>
+  <rect class="cv-drift-1" x="300" y="96" width="12" height="12" fill="#FC5000"/>
+<rect class="cv-drift-2" x="980" y="92" width="12" height="12" fill="#524AE9"/>
+<rect class="cv-drift-3" x="170" y="545" width="12" height="12" fill="#F5F28E"/>
+<rect class="cv-drift-4" x="705" y="560" width="12" height="12" fill="#FC5000"/>
+<rect class="cv-drift-5" x="1085" y="548" width="12" height="12" fill="#524AE9"/>
+<rect class="cv-drift-6" x="832" y="250" width="12" height="12" fill="#F5F28E"/>
+<rect class="cv-drift-7" x="1232" y="360" width="12" height="12" fill="#FC5000"/>
+  <g class="cv-reveal-8"><text x="96" y="300" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, sans-serif" font-size="120" font-weight="800" fill="#070607">Your Name</text></g>
+  <g clip-path="url(#bc-gleam-clip)"><g class="cv-sweep-13"><rect x="-40" y="188" width="70" height="130" fill="url(#bc-gleam-grad)" transform="rotate(16 -5 253)"/></g></g>
+  <g class="cv-reveal-9"><rect class="cv-shimmer-12" x="100" y="322" width="260" height="12" rx="2" fill="#FC5000"/></g>
+  <g class="cv-reveal-10"><text x="100" y="392" font-family="ui-sans-serif, system-ui, sans-serif" font-size="34" fill="#070607">Subtraction for life, addition for thought.</text></g>
+  <g class="cv-reveal-11"><text x="100" y="438" font-family="ui-sans-serif, system-ui, sans-serif" font-size="24" fill="#5B5B59">Designer · Engineer · Maker</text></g>
+  <rect x="872" y="150" width="320" height="340" rx="40" fill="#F7F6F2" stroke="#070607" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round"/>
+  <g class="cv-drift-14"><polygon class="cv-pulse-15" points="1032.00,250.00 1048.00,292.29 1092.62,285.00 1064.00,320.00 1092.62,355.00 1048.00,347.71 1032.00,390.00 1016.00,347.71 971.38,355.00 1000.00,320.00 971.38,285.00 1016.00,292.29" fill="#524AE9"/></g>
+  <g class="cv-orbit-16"><circle cx="1032" cy="320" r="11" fill="#FC5000"/></g>
+  <polygon class="cv-shimmer-17" points="1150,184 1153.36,192.64 1162,196 1153.36,199.36 1150,208 1146.64,199.36 1138,196 1146.64,192.64" fill="#F5F28E"/>
+</svg>

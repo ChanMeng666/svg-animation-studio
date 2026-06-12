@@ -1,9 +1,13 @@
 # lib API Reference
 
 > Every public function in `lib/`. CLAUDE.md indexes names; this file is the
-> contract. Updated whenever a primitive is added (via `/svg-add-primitive`).
+> contract. Primitives are added via `/svg-add-primitive`; the data/orchestration
+> modules (`palettes`, `scene`, `easing`, `composer`) are edited directly.
 >
-> 25 primitives shipped in Sprint 1 (10 motion / 11 shapes / 4 filters).
+> 39 primitives (16 motion / 16 shapes / 4 filters / 3 decor), plus the
+> `palettes` (theme system), `scene` (layer composer), `easing`, and `composer`
+> modules. The motion/shapes/decor additions + palettes + scene composer are
+> what make chan-cover-level covers, banners, logos and loaders repeatable.
 
 ## Return-value convention
 
@@ -12,6 +16,7 @@
 | `motion.*` | `{ css: string, className: string }` — composer merges css into `<style>`; preset attaches className to target |
 | `shapes.*` | `string` — raw SVG element (rect / g / ellipse / clipPath / linearGradient / ...) |
 | `filters.*` | `string` — raw `<filter>` element; placed in `<defs>` |
+| `decor.*` | `{ defs: string, body: string }` — a `<defs>` fragment (pattern/gradient/clipPath) + the body element that references it; pair with `scene.layer(body, { defs })` |
 
 Counters: `motion.resetIdCounter()` is called at the start of each preset's
 `compose()`, so generated class names are deterministic per render. Without
@@ -242,6 +247,98 @@ before looping — a periodic shine. The swept element must be authored off-scre
 
 Used by: `chan-cover` (a glare gleam clipped to the "Chan Meng" wordmark).
 
+### `createSpin(opts)`
+
+Continuous rotation around the element's own centre (`transform-box: fill-box`).
+For loaders, badges, gears. Make the target visually asymmetric (e.g. a dashed
+ring) or the spin won't read.
+
+| opt | type | default |
+|---|---|---|
+| `duration` | string | `'3s'` |
+| `easing` | string | `'linear'` |
+| `direction` | `'cw' \| 'ccw'` | `'cw'` |
+| `from` / `to` | number (deg) | `0` / `360` |
+
+Used by: `orbit-spinner`, `orbit-logo`, `spin-badge`.
+
+### `createPulse(opts)`
+
+Gentle scale "breathing" loop around the element's centre. For logos and idle
+marks. Base (un-animated) state is natural size → reduced-motion shows it at rest.
+
+| opt | type | default |
+|---|---|---|
+| `duration` | string | `'2.4s'` |
+| `easing` | string | `'easeInOut'` |
+| `delay` | string | `'0s'` |
+| `minScale` / `maxScale` | number | `0.96` / `1.04` |
+
+Used by: `dot-loader`, `star-loader`, `spin-badge`, `pulse-mono-logo`, `orbit-logo`, `gradient-cover`, `brand-cover`, `bounce-char`.
+
+### `createRipple(opts)`
+
+Expanding ring: scales outward from centre while fading — a sonar/ripple pulse.
+Generalises `createSoundWaveExpand`. Stagger several for concentric waves.
+
+| opt | type | default |
+|---|---|---|
+| `duration` | string | `'1.8s'` |
+| `easing` | string | `'easeOut'` |
+| `delay` | string | `'0s'` |
+| `startScale` / `endScale` | number | `0.4` / `1.4` |
+| `startOpacity` / `endOpacity` | number | `0.5` / `0` |
+
+Used by: `ripple-loader` (× 3 staggered).
+
+### `createOrbit(opts)`
+
+Orbital sweep: the element traces a circle of `radius` around its own centre while
+staying upright (double counter-rotation). Place the element AT the orbit centre.
+
+| opt | type | default |
+|---|---|---|
+| `duration` | string | `'4s'` |
+| `easing` | string | `'linear'` |
+| `radius` | number (px) | `20` |
+| `direction` | `'cw' \| 'ccw'` | `'cw'` |
+
+Used by: `orbit-spinner`, `orbit-logo`, `repo-hero`, `brand-cover`.
+
+### `createParallaxDrift(opts)`
+
+Slow one-axis layer drift for scene depth — a back layer eases a few px and
+returns. Wrap an over-wide element so the drift never exposes an edge.
+
+| opt | type | default |
+|---|---|---|
+| `duration` | string | `'12s'` |
+| `easing` | string | `'easeInOut'` |
+| `delay` | string | `'0s'` |
+| `distance` | number (px) | `24` |
+| `axis` | `'x' \| 'y'` | `'x'` |
+
+Used by: `drift-field`, `hero-strip`.
+
+### `createParticleStagger(opts)`
+
+A field of N drifting accents with **seeded-deterministic** per-item variation —
+promotes chan-cover's hand-tuned drifting-square array into a generator. Returns
+`{ items: [{ css, className }], css }`; map `items[i].className` onto element i.
+Uses a seeded PRNG (never `Math.random`/`Date.now`) so snapshots stay stable.
+
+| opt | type | default |
+|---|---|---|
+| `count` | number | `6` |
+| `seed` | number | `1` |
+| `baseDuration` / `durationJitter` | number (s) | `4` / `1.2` |
+| `amplitude` / `amplitudeJitter` | number (px) | `8` / `3` |
+| `rotateMax` | number (deg) | `8` |
+| `maxDelay` | number (s) | `1` |
+| `easing` | string | `'easeInOut'` |
+
+Used by: `drift-field`, `accent-card`, `hero-strip`, `gradient-cover`, `brand-cover`.
+
 ---
 
 ## shapes.*
@@ -289,6 +386,30 @@ Arc paths for sound waves. Use `*Raw` when caller wants to pass exact `d`
 Standalone mouth `<rect>`. Used when a character template doesn't include
 its own mouth.
 
+### `createAccentSquare({ x, y, size?, fill?, applyClass? })`
+
+A single brand pixel-square accent (`<rect>`). Bind to a `createDrift` /
+`createParticleStagger` item. Used by: `accent-card`, `hero-strip`, `gradient-cover`, `brand-cover`.
+
+### `createBadgeShape({ x, y, w?, h?, rx?, fill?, stroke?, strokeWidth?, applyClass? })`
+
+Rounded-rect / pill badge container (`<rect rx>`). Used by: `spin-badge`, `pulse-mono-logo`.
+
+### `createStar({ cx, cy, points?, outerR?, innerR?, fill?, applyClass? })`
+
+N-point star / sparkle (`<polygon>`). `points` = number of star points;
+`outerR`/`innerR` set spikiness. Used by: `star-loader`, `spin-badge`, `orbit-logo`, `gradient-cover`, `brand-cover`.
+
+### `createBurst({ cx, cy, size?, thickness?, fill?, applyClass? })`
+
+A 4-point diamond-spike sparkle (`<polygon>`); `thickness` (0–1) sets waist width.
+Used by: `spin-badge`, `repo-hero`, `pulse-mono-logo`, `brand-cover`.
+
+### `createPanel({ x, y, w?, h?, rx?, fill?, stroke?, strokeWidth?, dashed?, dashArray?, applyClass? })`
+
+Decorative card / panel — rounded `<rect>` with optional dashed stroke (the
+chan-cover card). Used by: `accent-card`, `hero-strip`, `repo-hero`, `gleam-banner`, `pulse-mono-logo`, `gradient-cover`, `brand-cover`.
+
 ---
 
 ## filters.*
@@ -310,6 +431,35 @@ Outer glow for sound waves (`stdDeviation` default 1.5).
 ### `createNoteGlow({ id, stdDeviation? })`
 
 Softer glow for music notes (`stdDeviation` default 2, wider filter region).
+
+---
+
+## decor.*
+
+Composite background / decoration recipes promoted from the chan-cover preset.
+Each returns `{ defs, body }` (a `<defs>` fragment + the body element that
+references it) — pair with `scene.layer(body, { defs })`.
+
+### `createDotGridBackground({ id, x?, y?, width, height, gap?, dotR?, color?, opacity? })`
+
+Low-opacity dotted `<pattern>` filled over a `<rect>` — chan-cover's dot-grid
+backdrop. Used by: `drift-field`(inline), `hero-strip`, `gradient-cover`, `repo-hero`, `brand-cover`.
+
+### `createGradientWash({ id, kind?, stops?, from?, to?, angle?, x?, y?, width, height, applyClass?, animate? })`
+
+Full-canvas gradient fill. `kind: 'linear' | 'radial'`; `angle` (deg) sets the
+linear direction; pass `stops` for a multi-stop ramp or `from`/`to` for two.
+`animate` (`true` or `{ dur }`) adds a SMIL gradient sweep — **runs as an `<img>`
+but ignores `prefers-reduced-motion`**, so use only where subtle motion is fine.
+Used by: `hero-strip` (static), `gradient-cover` / `repo-hero` (animated).
+
+### `createTextGleamClip({ id, pathD?, clipContent?, transform?, gleamColor?, gleamOpacity?, rectX?, rectY?, rectW?, rectH?, angle?, rotateCenter?, sweepClassName? })`
+
+A `<clipPath>` (of an outlined-text/shape path, OR arbitrary `clipContent` — e.g.
+a duplicate `<text>` for system-font gleams) + a soft swept gradient rect — the
+chan-cover headline gleam. Pair the inner rect with a `createSweep` class
+(`sweepClassName`) to make the sheen travel across the letters.
+Used by: `gleam-banner` (pathD), `brand-cover` (clipContent = the live `<text>`).
 
 ---
 
@@ -346,7 +496,52 @@ Indent each non-empty line by `spaces` spaces (used internally by composer).
 | `bouncy`        | `cubic-bezier(0.68, -0.55, 0.265, 1.55)` |
 | `smooth`        | `cubic-bezier(0.4, 0, 0.2, 1)` |
 | `snappy`        | `cubic-bezier(0.4, 0, 0, 1)` |
+| `elastic`       | `cubic-bezier(0.68, -0.6, 0.32, 1.6)` |
+| `anticipate`    | `cubic-bezier(0.36, 0, 0.66, -0.56)` |
+| `bouncyCubic`   | `cubic-bezier(0.5, 2, 0.5, 1)` |
 
 ### `smilSplines`
 
 Same names where defined. SMIL `keySplines` format, e.g. `'0.42 0 0.58 1'`.
+Note: overshoot curves (`elastic` / `anticipate` / `bouncyCubic`) are CSS-only —
+their control points fall outside `[0,1]`, which is invalid for SMIL `keySplines`.
+
+---
+
+## palettes.* (theme system)
+
+Curated named palettes — a data module (sibling to `easing`). A palette token
+object is `{ name, category, label, dark, bg, bgAlt, ink, muted, accents:[…], line }`.
+Reference an accent by **index** (`pal.accents[0]`), never by colour name, so a
+preset stays portable across palettes. 8 sets: `caldera` (the exact chan-cover
+Caldera tokens), `mono`, `midnight`, `sunset`, `nature`, `neon`, `pastel`, `ocean`.
+
+### `getPalette(name?)`
+
+Returns the frozen palette object (default `'caldera'`); throws on an unknown name.
+
+### `listPalettes()`
+
+Returns `[{ name, category, label, dark }]` — used by the playground palette switcher.
+
+---
+
+## scene.* (layer composer)
+
+An orchestration helper that sits BELOW `composeSVG`: a preset builds ordered
+layers, `composeScene` returns `{ body, defs, style }`, then the preset still
+calls `composeSVG` to wrap the document.
+
+### `composeScene({ layers, defs?, style? })`
+
+Assembles `layers` (back-to-front) into a `body` string and collects each layer's
+`defs`. The key job: when a layer has BOTH a static `transform` and an animated
+`className`, it emits the two-level nested `<g>` automatically (outer = static
+transform; inner = animated class, no transform attr) — the Gotcha-2 split in
+`docs/embedding-animated-svg.md`, handled for you. Returns `{ body, defs, style }`
+ready to spread into `composeSVG`.
+
+### `layer(content, opts?)`
+
+Builds a layer descriptor: `content` is an SVG markup string; `opts` may include
+`{ transform, className, clip, filter, opacity, defs }`.

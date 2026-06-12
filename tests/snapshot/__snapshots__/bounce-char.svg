@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 90" width="140" height="126">
+  <title>Bouncing pixel character</title>
+  <desc>A pixel-art character springing up and down on a bouncy ease while it gently breathes, with bouncing ears and a soft ground shadow pulsing in sync.</desc>
+  <style>
+    .cv-bob-1 {
+      animation: kf-cv-bob-1 0.7s cubic-bezier(0.5, 2, 0.5, 1) infinite;
+      transform-origin: center bottom;
+    }
+    @keyframes kf-cv-bob-1 {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    .cv-pulse-2 {
+      animation: kf-cv-pulse-2 2.5s ease-in-out infinite 0s;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes kf-cv-pulse-2 {
+      0%, 100% { transform: scale(0.98); }
+      50% { transform: scale(1.03); }
+    }
+    .cv-ear-3 {
+      animation: kf-cv-ear-3 0.5s ease-in-out infinite 0s;
+      transform-origin: center bottom;
+    }
+    @keyframes kf-cv-ear-3 {
+      0%, 100% { transform: scaleY(1); }
+      40% { transform: scaleY(1.2); }
+      60% { transform: scaleY(0.85); }
+    }
+    .cv-ear-4 {
+      animation: kf-cv-ear-4 0.5s ease-in-out infinite 0.1s;
+      transform-origin: center bottom;
+    }
+    @keyframes kf-cv-ear-4 {
+      0%, 100% { transform: scaleY(1); }
+      40% { transform: scaleY(1.2); }
+      60% { transform: scaleY(0.85); }
+    }
+    .cv-shadow-p-5 {
+      animation: kf-cv-shadow-p-5 0.8s ease-in-out infinite;
+    }
+    @keyframes kf-cv-shadow-p-5 {
+      0%, 100% { transform: scaleX(1); opacity: 0.25; }
+      50% { transform: scaleX(0.9); opacity: 0.2; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
+  </style>
+<ellipse class="cv-shadow-p-5" cx="50" cy="82" rx="22" ry="5" fill="#000"/>
+  <g class="cv-bob-1">
+  <g class="cv-pulse-2">
+      <rect class="cv-ear-3" x="22" y="10" width="8" height="14" fill="#FC5000"/>
+      <rect class="cv-ear-4" x="70" y="10" width="8" height="14" fill="#FC5000"/>
+      <rect x="18" y="24" width="64" height="4" fill="#FC5000"/>
+      <rect x="14" y="28" width="72" height="32" fill="#FC5000"/>
+      <rect x="30" y="34" width="8" height="10" fill="#070607"/>
+      <rect x="62" y="34" width="8" height="10" fill="#070607"/>
+      <rect x="42" y="50" width="16" height="3" fill="#070607"/>
+      <rect x="2" y="36" width="12" height="8" fill="#FC5000"/>
+      <rect x="86" y="36" width="12" height="8" fill="#FC5000"/>
+      <rect x="24" y="60" width="12" height="14" fill="#FC5000"/>
+      <rect x="64" y="60" width="12" height="14" fill="#FC5000"/>
+    </g>
+</g>
+</svg>
