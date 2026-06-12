@@ -29,6 +29,31 @@ The parent thread passes one argument: the preset slug (e.g.,
 
 ## Workflow
 
+### Step 0 — Pre-flight: is chrome-devtools MCP actually available?
+
+Visual verification depends on the `mcp__chrome-devtools__*` tools. In some
+contexts (headless / cron runs, a disconnected MCP server) they are NOT present
+or not connected. Check this BEFORE rendering anything:
+
+- If the `mcp__chrome-devtools__*` tools are absent from your tool list, OR a
+  cheap probe such as `mcp__chrome-devtools__list_pages` returns a
+  "not connected / unavailable / unknown tool" error → MCP is unavailable.
+
+When MCP is unavailable, do NOT try to guess at the animation. Return
+immediately WITHOUT blocking the parent's pipeline:
+
+```
+VERDICT: pass
+Note: Visual verification skipped — chrome-devtools MCP unavailable in this context. Not visually graded.
+Issues:
+Strengths:
+```
+
+Rationale: a missing browser is an environment limitation, not an animation
+defect, so `fail` would be wrong and would stall the `/svg-animate` loop. The
+`Note:` makes explicit that no grading happened — this is an honest "skipped",
+NOT a fabricated pass (Issues / Strengths stay empty).
+
 ### Step 1 — Ensure preview server is up
 
 ```bash
@@ -82,11 +107,14 @@ Strict format. The parent parses this:
 
 ```
 VERDICT: <pass | tweak | fail>
+Note: <OPTIONAL — include ONLY when coverage was skipped or partial, e.g. MCP unavailable / disconnected>
 Issues:
 - <one line per issue, max 3>
 Strengths:
 - <one line per strength, max 2>
 ```
+
+Omit the `Note:` line entirely on a normal, fully-captured run.
 
 Examples:
 
@@ -122,6 +150,8 @@ Issues:
 - ❌ Make subjective complaints without backing them to a rubric point
 - ❌ Recommend specific code fixes — that's the parent's job
 - ❌ Leave servers running that you started
+- ❌ Fabricate Issues / Strengths from frames you never captured — when you
+  couldn't see the animation, say so with a `Note:`, don't invent a grade
 
 ## Uncertainty handling
 
@@ -132,11 +162,24 @@ signals "could be better" without forcing a full redo. `fail` should mean
 
 ## If something is broken before you can judge
 
-- Server won't start → `fail` with one-line cause
-- `/api/svg` returns non-2xx → `fail` with status code
-- Page renders empty / error text → `fail` with the visible error
-- Chrome MCP disconnects mid-session → return what you have with a note;
-  do not pretend you finished
+Distinguish ENVIRONMENT limits (don't block the pipeline) from real DEFECTS of
+the asset or harness (fail honestly):
+
+- **chrome-devtools MCP unavailable at startup** → see Step 0: `VERDICT: pass`
+  with a `Note:` that verification was skipped. Never `fail` for a missing browser.
+- **MCP disconnects mid-task but you already captured ≥ 1 frame** → judge from
+  the frames you have and add `Note: partial coverage — MCP disconnected after
+  N of 5 frames.` Don't pretend you saw the full loop.
+- **MCP disconnects / page closes BEFORE any frame was captured** →
+  `VERDICT: pass` with `Note: could not capture any frames (MCP disconnected); not visually graded.`
+  Leave Issues / Strengths empty — never invent a grade you didn't observe.
+- **Preview server won't start / `/api/svg` returns non-2xx / page renders empty
+  or error text** → these ARE real failures of the asset or harness:
+  `VERDICT: fail` with the one-line cause (status code or visible error).
+
+Hard rule: a grade's Issues / Strengths must be backed by pixels you actually
+saw. If you didn't capture frames, the only honest output is a skipped/partial
+`Note:` — not a fabricated verdict.
 
 ## Why this agent exists separately from the skill
 

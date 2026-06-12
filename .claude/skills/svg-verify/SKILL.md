@@ -116,11 +116,14 @@ Strict format. The main thread parses this:
 
 ```
 VERDICT: <pass | tweak | fail>
+Note: <OPTIONAL — only when coverage was skipped or partial (MCP unavailable / disconnected)>
 Issues:
 - <one line per issue, max 3>
 Strengths:
 - <one line per strength, max 2>
 ```
+
+Omit the `Note:` line on a normal, fully-captured run.
 
 Map the per-point scores to the overall verdict:
 
@@ -170,3 +173,31 @@ Issues:
 Animation quality has some subjective wiggle. When in doubt, prefer `tweak`
 over `pass`/`fail`. `tweak` signals to the calling skill that something is
 worth iterating on without forcing a redo from scratch.
+
+## When chrome-devtools MCP is unavailable or disconnects
+
+Visual verification needs the `mcp__chrome-devtools__*` tools. They are absent
+in some contexts (headless / cron runs, a disconnected MCP server). Separate an
+ENVIRONMENT limit from a real animation DEFECT:
+
+- **Pre-flight — MCP not available** (tools absent, or a probe like
+  `mcp__chrome-devtools__list_pages` errors "not connected / unknown tool"):
+  do not try to grade. Return, without blocking the caller:
+
+  ```
+  VERDICT: pass
+  Note: Visual verification skipped — chrome-devtools MCP unavailable in this context. Not visually graded.
+  Issues:
+  Strengths:
+  ```
+
+- **Disconnect mid-capture, ≥ 1 frame already taken**: grade from the frames
+  you have and add `Note: partial coverage — MCP disconnected after N of 5 frames.`
+- **Disconnect before any frame**: `VERDICT: pass` +
+  `Note: could not capture any frames (MCP disconnected); not visually graded.`
+- **Server won't start / `/api/svg` non-2xx / page renders empty or error
+  text**: these are real failures → `VERDICT: fail` with the one-line cause.
+
+Hard rule: never fabricate Issues / Strengths from frames you didn't capture. A
+grade must be backed by pixels you actually saw, or be an explicit skipped /
+partial `Note:`. A missing browser is never an animation `fail`.

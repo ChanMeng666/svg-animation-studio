@@ -72,6 +72,20 @@ graded "polished and ship-ready".
 - Animated gradient washes use SMIL (runs in `<img>`) but ignore
   `prefers-reduced-motion` — used only where subtle continuous motion is fine.
 
+### Fixed
+
+- **#1 — `motion.resetIdCounter()` now has an automated guard.** New
+  `tests/unit/determinism.test.js` fails when any preset's `compose()` is
+  non-deterministic across renders (the real symptom of a forgotten reset),
+  plus a source guard that the reset precedes the first primitive. Resolves the
+  v0.1.0 "enforced only by convention, no check" known issue.
+- **#2 — `svg-verifier` handles chrome-devtools MCP outages gracefully.**
+  Pre-flight: MCP unavailable → `VERDICT: pass` + a `Note:` that verification
+  was skipped (no longer `fail`s on a missing browser, so the `/svg-animate`
+  loop isn't stalled). Mid-task disconnect → grade the frames captured + a
+  `Note:` flagging partial coverage; zero frames → skipped `Note:`, never a
+  fabricated verdict. Mirrored into the `svg-verify` skill.
+
 ---
 
 ## [0.1.0] — 2026-06-03
