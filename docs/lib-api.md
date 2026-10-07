@@ -8,6 +8,9 @@
 > `palettes` (theme system), `scene` (layer composer), `easing`, and `composer`
 > modules. The motion/shapes/decor additions + palettes + scene composer are
 > what make chan-cover-level covers, banners, logos and loaders repeatable.
+>
+> The product-card toolkit — `text`, `timeline`, `media` — is documented at the
+> foot of this file. Those three are orchestration modules, edited directly.
 
 ## Return-value convention
 
@@ -545,3 +548,95 @@ ready to spread into `composeSVG`.
 
 Builds a layer descriptor: `content` is an SVG markup string; `opts` may include
 `{ transform, className, clip, filter, opacity, defs }`.
+
+---
+
+## text.* (shared-glyph text)
+
+No font loads inside `<img>`. `scripts/outline-text.mjs` turns one string into one
+path, which reuses nothing. A glyph set stores each glyph **once** in `<defs>` (font
+units, y up) and places it with `<use x="advance">`; the run's wrapper scales and
+flips it. Use it for anything longer than a display word: paragraphs, code, UI text.
+Method and pitfalls: `docs/product-cards.md` § 6.1.
+
+### `createGlyphSet(fonts, { prefix? })`
+
+`fonts` is `{ key: pathToStaticFont }`. Pass **static** instances: a variable font
+gives its default instance, which may be Light. `prefix` (default `g`) namespaces
+glyph ids when two sets share one SVG. Returns:
+
+| Member | Returns |
+|---|---|
+| `text(str, { font, size, x?, y?, fill?, anchor?, tracking?, fallback?, attrs? })` | `string` — one `<g>` of `<use>`s with its baseline at `(x, y)`. `anchor`: `start` / `middle` / `end`. `tracking` in em. `fallback` names a font (same units-per-em) to take missing characters from. |
+| `measure(str, { font, size, tracking?, fallback? })` | `number` — width in px. |
+| `wrap(str, style, maxWidth)` | `string[]` — greedy word wrap on measured width. |
+| `outlineTextElements(svg, { regular, bold?, fallback? })` | `string` — a foreign SVG fragment with every `<text>` rewritten as a glyph run (honours `x`, `y`, `font-size`, `fill`, `text-anchor`, `font-weight`, `dominant-baseline="central"`, `transform`). |
+| `defs()` | `string` — the glyph `<path>`s. Call **after** every `text()`. |
+| `glyphCount()` | `number` — distinct glyphs stored. |
+
+A character the font lacks throws, unless `fallback` has it. Outlined text is not
+read by a screen reader: put the sentence in `composeSVG`'s `title` / `desc`.
+Used by: `project-card`.
+
+---
+
+## timeline.* (one loop, scheduled)
+
+Motion primitives loop on their own clocks. A timeline writes every rule on **one**
+loop duration, so the piece seams once, and it authors the **finished frame as the
+base state**, so the reduced-motion rule leaves a complete picture.
+
+### `createTimeline({ duration, prefix? })`
+
+`duration` in seconds. Returns:
+
+| Member | What it gives |
+|---|---|
+| `on(t, { fade?, name? })` | `{ className, attrs }` — shown from `t` to the end of the loop; part of the still frame. |
+| `span(a, b, { fade?, name? })` | `{ className, attrs }` — shown only between `a` and `b`; `attrs` carries `opacity="0"` so it is absent when animations are off. |
+| `until(t, opts?)` | `span(0, t)`. |
+| `keyframes(frames, { name?, timing?, base? })` | class name — a hand-written rule on this loop. `frames` is a string or `(pct) => string`. `base` is CSS for the resting state. |
+| `shift(start)` | `animation-delay:-…s` — runs a rule written relative to `t = 0` as if it began at `start`. A negative delay never waits, so N scenes share one set of keyframes. |
+| `cover({ start?, chars, width, cps?, name? })` | class name for a page-coloured rect that slides off a row of text in `steps(chars)`: typing. Clip the row to its container. |
+| `sequence(durations)` | start time of each consecutive scene; throws if they overrun the loop. |
+| `pct(t)` | seconds → keyframe percentage. |
+| `css()` | every rule written so far, for `composeSVG`'s `style`. |
+
+Put `attrs` on a wrapper `<g>` that carries no `transform` attribute (Gotcha 2).
+A named rule is written once however often it is requested. Class names come from a
+counter private to the timeline, so a preset stays deterministic without a reset.
+Used by: `project-card`, `film-strip`.
+
+---
+
+## media.* (pictures inside the file)
+
+An SVG shown as `<img>` cannot fetch a picture but can carry one as a data URI.
+Budget and trade-offs: `docs/product-cards.md` § 6.7, 6.8 and 8.
+
+### `dataUri(fileOrBuffer, mime?)`
+
+A `data:` URI. The type is read from the extension (`.jpg`, `.png`, `.webp`,
+`.svg`); a Buffer needs `mime`.
+
+### `filmStrip({ id, frames, x, y, width, height, rx?, start?, seconds, timeline })`
+
+Frames (hrefs) stacked in a column and stepped through from `start` for `seconds`.
+It steps to the **last** frame and rests there, and that frame is the still frame.
+Returns `{ defs, body }`. Used by: `film-strip`.
+
+### `crossfade({ id, stills, at, x, y, width, height, rx?, fade?, timeline })`
+
+Stills in one frame; `at[i]` is when still `i + 1` fades in over the last. A tenth
+the cost of a strip, and the right default for interface screenshots.
+Returns `{ defs, body }`. Used by: `film-strip`.
+
+---
+
+## scripts (build-time helpers)
+
+| Script | Use |
+|---|---|
+| `outline-text.mjs --font --text --size [--out --key]` | One display string → one `<path>`. |
+| `film-stills.mjs --in (--at=t1,t2 \| --from --seconds --fps) [--crop=w:h:x:y --size=WxH --q --out]` | Stills or a frame strip out of a video, as a JSON array of JPEG data URIs. Needs ffmpeg. |
+| `capture-frames.mjs <file.svg> --at=1,3,5 [--out --width]` | Captures the SVG through `<img>` at each second on a light and a dark canvas, checks it decoded, and fails if the reduced-motion picture (loaded as a document) is still moving. |

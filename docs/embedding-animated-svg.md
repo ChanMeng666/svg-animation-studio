@@ -18,6 +18,12 @@ the gotchas that bit us building the `chan-cover` preset.
 | External images / refs | ✅ | ❌ blocked |
 | `transform-box`, `clip-path`, gradients, patterns | ✅ | ✅ |
 | `@media (prefers-reduced-motion)` | ✅ | ✅ |
+| `<use href="#id">`, a nested `<svg viewBox>` | ✅ | ✅ |
+| `<image href="data:image/jpeg;base64,…">` (also a data-URI SVG) | ✅ | ✅ |
+| Inline `style="animation-delay:…"` | ✅ | ✅ |
+
+The last three rows, and files up to 619 KB, were confirmed on a live GitHub profile
+(light and dark) on 2026-10-07.
 
 **Takeaway:** animate with CSS `@keyframes` (the studio's default) and keep the
 file self-contained. Never depend on JS or external resources.
@@ -30,7 +36,11 @@ is to convert text to vector outlines at **build time** and inline the resulting
 `<path>`:
 
 - Use `scripts/outline-text.mjs` (opentype.js): `node scripts/outline-text.mjs --font=assets/fonts/Anton-Regular.ttf --text="Chan Meng" --size=150` → prints the path `d` + advance width. Bake the result into a data module the preset requires (see `lib/presets/chanCoverText.js`).
-- Vendored fonts live in `assets/fonts/`.
+- That script makes **one path per string**, which is right for a display word and
+  wasteful for anything longer: nothing is reused. For paragraphs, code or UI text
+  use `lib/text.js` (`createGlyphSet`), which stores each glyph once and places it
+  with `<use>`. See `docs/product-cards.md` § 6.1.
+- Vendored fonts live in `assets/fonts/`. Use static instances.
 - Cost: outlined text isn't selectable. Carry the real string in the SVG `<title>`/`<desc>` and the host `<img alt>` for accessibility/SEO.
 
 ## Gotcha 2 — A CSS `transform` animation REPLACES the element's `transform` attribute
@@ -89,6 +99,14 @@ HTML page that embeds the SVG as `<img src="<slug>.svg">` (relative path,
 same-origin — `setContent` with a `file://` src is blocked and shows a false
 broken-image). Check `img.naturalWidth > 0`, then screenshot. See the `<img>`-mode
 step in `svg-verify`.
+
+**Reduced motion needs its own route.** Browser emulation of
+`prefers-reduced-motion` did not reach an SVG loaded through `<img>` in our harness:
+the animation kept running, so that test passes a moving picture. Load the SVG as a
+top-level document with the emulation on, capture twice a few seconds apart, and
+require the captures to be identical. `scripts/capture-frames.mjs` does all of it:
+timed captures through `<img>` on a light and a dark canvas, the decode check, and
+the reduced-motion comparison.
 
 ## Reusable composition recipes (now promoted to lib primitives)
 

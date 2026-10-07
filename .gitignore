@@ -1,6 +1,7 @@
 node_modules/
 .next/
 output/*.svg
+output/frames/
 !output/.gitkeep
 .DS_Store
 *.log

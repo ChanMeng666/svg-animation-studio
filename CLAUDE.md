@@ -29,6 +29,7 @@ primitives that came before.
 | `lib/composer.js` | The only allowed way to assemble a final `<svg>` string. |
 | `lib/scene.js` | Layer/scene composer (sits BELOW composeSVG). Handles the static-vs-animated transform nesting. NOT a primitive — edit directly. |
 | `lib/palettes.js` | Curated named palettes (theme system). NOT a primitive — edit directly. |
+| `lib/text.js` · `lib/timeline.js` · `lib/media.js` | The product-card toolkit: shared-glyph text, one-loop scheduling, embedded pictures. NOT primitives — edit directly. |
 | `lib/easing.js` | Named easing curves for both CSS and SMIL. |
 | `docs/` | Permanent design memory. Open on demand. |
 | `playground/` | Next.js preview server. `/api/svg?preset=NAME` returns SVG. |
@@ -109,12 +110,23 @@ primitives that came before.
 - `composeScene({layers, defs, style})` — assemble ordered layers → `{body, defs, style}`; auto-nests static `transform` + animated `className` (Gotcha 2)
 - `layer(content, {transform, className, clip, filter, opacity, defs})` — layer descriptor
 
+**`lib/text.js`** — text that survives `<img>` at any length
+- `createGlyphSet(fonts)` → `{ text, measure, wrap, outlineTextElements, defs, glyphCount }`; each glyph stored once, placed with `<use>`
+
+**`lib/timeline.js`** — a schedule on one loop; the finished frame is the base state
+- `createTimeline({duration})` → `{ on, span, until, keyframes, shift, cover, sequence, pct, css }`
+
+**`lib/media.js`** — pictures carried inside the file
+- `dataUri(fileOrBuffer, mime?)` · `filmStrip({frames,…,timeline})` · `crossfade({stills,at,…,timeline})` → `{defs, body}`
+
 **`lib/composer.js`**
 - `composeSVG({viewBox, width, height, style, defs, body, reducedMotion=true})` — assemble final SVG; `reducedMotion` (default on) auto-appends the `prefers-reduced-motion` fallback when there's a `<style>`
 - `escapeXml(text)` — XML entity escape
 
 **`scripts/`** (build-time helpers)
-- `outline-text.mjs --font --text --size [--out --key]` — text → SVG `<path>` (fonts don't load in `<img>` mode; outline them)
+- `outline-text.mjs --font --text --size [--out --key]` — ONE display string → one `<path>` (longer text: `lib/text.js`)
+- `film-stills.mjs --in --at|--from --seconds --fps [--crop --size --q]` — video → JPEG data URIs for `lib/media.js`
+- `capture-frames.mjs <file.svg> --at=…` — timed `<img>` captures on both canvases + the reduced-motion check
 
 ## 4. Workflow (the natural-language loop)
 
@@ -134,26 +146,9 @@ User: "做一个会跳的橙色机器人"
 For multi-asset jobs ("a full brand animation kit"), the user runs
 `/ultracode` to invoke Dynamic Workflows (see `docs/sprint-4-workflows.md`).
 
-The four skills + three subagents compose as a pipeline:
-```
-/svg-animate  ──renders──►  output/<slug>.svg
-     │
-     ├─when user wants N variants──►  svg-explorer (subagent)
-     │                                  └─returns──►  comparison block
-     │
-     └─calls──►  /svg-verify  ──uses agent──►  svg-verifier (subagent)
-                                                └─returns──►  ≤100-word verdict
-     │                                                    │
-     └◄──── iterates (up to 3 rounds) ───────────────────┘
-
-/svg-add-primitive  ──uses agent──►  lib-extender (subagent)
-                                       └─adds primitive + uses it + tests + docs
-
-/svg-export <slug> [--out=path]  ──final SVGO + accessibility + ship
-```
-
-For complex multi-asset jobs ("brand kit"), see
-`docs/sprint-4-workflows.md` trigger phrase cheat sheet.
+Skills and subagents: `/svg-animate` renders; `/svg-verify` (svg-verifier) scores it;
+`/svg-add-primitive` (lib-extender) grows `lib/primitives/`; `/svg-export` ships.
+Multi-asset jobs: `docs/sprint-4-workflows.md`.
 
 ## 5. Critical rules
 
@@ -164,7 +159,8 @@ For complex multi-asset jobs ("brand kit"), see
 2. **New primitives go through `/svg-add-primitive`.** Never hand-edit
    `lib/primitives/*.js` (motion/shapes/filters/decor) directly. The skill
    enforces JSDoc + a consuming preset + snapshot pass. `lib/palettes.js`,
-   `lib/scene.js`, `lib/easing.js` are NOT primitives — edit them directly.
+   `lib/scene.js`, `lib/easing.js`, `lib/text.js`, `lib/timeline.js`, `lib/media.js`
+   are NOT primitives — edit them directly.
 
 3. **Snapshot tests gate every `lib/` change.** Run `npm test` after edits.
    If a snapshot legitimately needs to change, run `npm run snapshot:update`
@@ -192,5 +188,7 @@ For complex multi-asset jobs ("brand kit"), see
 - How to design a new subagent → `docs/sprint-3-subagents.md`
 - How to add a primitive safely → `docs/extension-protocol.md`
 - Animation feels off → `docs/animation-principles.md`
+- A card showing a product at work (README project card, product demo) → `docs/product-cards.md`; fork `project-card`
+- A logo that changes expression on a long loop, on frozen geometry → `docs/animating-a-mark.md`
 - SVG broken once embedded on GitHub / in a README (`<img>`) → `docs/embedding-animated-svg.md` (fonts→outline, transform-attr vs CSS-transform, reduced-motion, SVGO hazards)
 - What shipped, when, and why → `CHANGELOG.md`

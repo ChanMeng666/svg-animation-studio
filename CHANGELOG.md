@@ -5,6 +5,67 @@ Versioning: [SemVer](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Theme: product cards — a product at work in one SVG (2026-10-07)
+
+Six animated project cards were built for a GitHub profile with hand-rolled
+helpers. This release moves what they needed into the studio, so the next card
+is a fork instead of a rewrite, and brings two field guides in with it. Every
+change is additive: the existing snapshots are byte-identical.
+
+#### Added — the product-card toolkit (orchestration modules, edited directly)
+
+- `lib/text.js` — `createGlyphSet(fonts)`. Shared-glyph text: each glyph is
+  outlined once into `<defs>` and placed with `<use>`, so paragraphs, code and UI
+  text survive `<img>` at a few dozen paths per font. `text`, `measure`, `wrap`,
+  per-glyph `fallback`, and `outlineTextElements` to rewrite the `<text>` of a
+  foreign SVG (a chart, a compiler's drawing). `scripts/outline-text.mjs` stays
+  for a single display string.
+- `lib/timeline.js` — `createTimeline({ duration })`. Every rule on one loop;
+  the finished frame is the base state. `on` / `span` / `until` visibility,
+  `shift` (scene-relative keyframes reused through a negative delay), `cover`
+  (text that types itself), `sequence`, `keyframes`.
+- `lib/media.js` — `dataUri`, `filmStrip` (frames stepped with `steps()`, resting
+  on the last), `crossfade` (stills fading over one another).
+
+#### Added — presets
+
+- `project-card` (card) — the reference 1300 × 360 card: identity panel, typed
+  code, the character it describes, a closing still. Reuses `createJump`,
+  `createShadowScale`, `createPixelCharacter`, `createGroundShadow`,
+  `createPanel`, `createAccentSquare`, `composeScene`, palettes.
+- `film-strip` (media) — the smallest film strip and cross-fade, with generated
+  frames so it stays deterministic.
+
+#### Added — scripts
+
+- `scripts/film-stills.mjs` — stills or a frame strip out of a video (ffmpeg) as
+  JPEG data URIs.
+- `scripts/capture-frames.mjs` (`npm run verify:frames`) — timed captures through
+  `<img>` on a light and a dark canvas, a decode check, and a reduced-motion
+  check that loads the SVG as a document, because emulation does not reach
+  `<img>`. `playwright-core` is a dev dependency for it.
+
+#### Added — docs
+
+- `docs/product-cards.md` — the field guide: the `<img>` sandbox, drawing in the
+  product's own design system, producing the stage from the real thing, the
+  techniques, weight, verification, and the mistakes already made.
+- `docs/animating-a-mark.md` — the playbook from
+  [chan-meng-logo](https://github.com/ChanMeng666/chan-meng-logo): CSS-only
+  character animation on a frozen logo, its six failures and its verification
+  harness.
+- `docs/embedding-animated-svg.md` — what else is confirmed to work on GitHub
+  (`<use>`, nested `<svg>`, data-URI images, inline delays, files of 600 KB), when
+  to use a glyph set instead of one path per string, and how to test reduced
+  motion.
+- `/svg-animate` recognises product cards and mark animation and points at the
+  two guides; `/svg-verify` gains a timed-capture step; the cookbook gains a
+  product-card section.
+
+#### Tests
+
+- `tests/unit/toolkit.test.js` — 17 tests over the three modules. 121 tests pass.
+
 ### Theme: make chan-cover-level polish repeatable (2026-06-12)
 
 Borrowed the transferable ideas from three reference projects

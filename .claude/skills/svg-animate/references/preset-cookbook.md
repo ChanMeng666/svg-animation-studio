@@ -146,6 +146,33 @@ In all three cases, the cleanest path is to ask the user to add the primitive,
 then come back. Inline primitives violate the protocol and produce a system
 that doesn't compound.
 
+## Product cards (a product at work, in one SVG)
+
+Reach for this when the request is a README project card, a product demo, or
+"show what it does". Full method: `docs/product-cards.md`.
+
+| Need | Reach for |
+|---|---|
+| Any text longer than a display word | `createGlyphSet(fonts)` from `lib/text.js` → `text()`, `measure()`, `wrap()`; put `defs()` in `<defs>` |
+| "appears at 3 s, gone by 8 s" | `createTimeline({ duration })` → `on(t)`, `span(a, b)`, `until(t)`; put `.attrs` on a wrapper `<g>` |
+| N scenes with the same choreography | write rules relative to `t = 0`, then `style="${tl.shift(start)}"` per scene |
+| Text that types itself | `tl.cover({ start, chars, width })` on a page-coloured rect over the row; clip the row |
+| A drawing that drafts itself | one `tl.on()` per layer, 0.3 s apart, in the drawing's own layer order |
+| Moving pictures | `media.filmStrip({ frames, …, timeline })`; cut frames with `scripts/film-stills.mjs` |
+| An interface screenshot that changes | `media.crossfade({ stills, at, …, timeline })` — a tenth the weight of a strip |
+| A real compiler/renderer's output | embed it; rewrite its `<text>` with `glyphs.outlineTextElements()` |
+
+Rules that decide whether the card is any good:
+
+1. **The product's own design system.** Read its tokens, fonts, wordmark file and
+   brand rules from its repository. `project-card`'s Caldera look is a placeholder.
+2. **Nothing on the stage is drawn by hand.** Compile it, quote it, ask it, cut it
+   from a film, or capture the live site; fail the render when it stops agreeing.
+3. **The finished frame is the base state.** `on()` things belong to the still
+   frame; `span()` things do not. Choose the still frame on purpose.
+4. **End on a frame about the work**, each figure with its basis on the same line.
+5. **Verify in time**: `node scripts/capture-frames.mjs output/<slug>.svg --at=…`.
+
 ## Color / theming notes
 
 - **New presets: don't hardcode hex — use `getPalette` (see the palette workflow

@@ -4,12 +4,15 @@ description: |
   Create, edit, or remix an animated SVG file from a natural-language description.
   Use this whenever the user asks you to make, build, design, generate, animate,
   or "draw something that moves" — mascots, logos, loaders, badges, icons,
-  characters, brand marks, or any visual asset that should animate. Always
-  prefer this skill over hand-writing SVG strings.
+  characters, brand marks, README project cards, product demos, or any visual
+  asset that should animate. Always prefer this skill over hand-writing SVG
+  strings.
   Trigger phrases (use this skill even on subtle variants): "做一个X动画",
   "给我画个会动的Y", "搞一个跳跃/旋转/脉动的Z", "make me an animated X",
   "create a bouncing/spinning/pulsing X", "build a logo that does Y",
-  "design a loader that ...", "I need an SVG mascot for ...".
+  "design a loader that ...", "I need an SVG mascot for ...", "做一个项目宣传卡片",
+  "给这个产品做个 README 动图", "make a project card for my README", "an animated
+  card that shows the product working", "animate this logo's expressions".
   Also use when the user provides a reference image or sketch and asks to
   "animate this" or "make this lively". When the user says they want output
   "as an SVG file" or asks for something to drop into output/, this skill is
@@ -37,7 +40,14 @@ inline anywhere, stop — `composer.composeSVG` exists for exactly that need.
 
 1. Read any user-provided reference from `ref/` (sketches, sample SVGs, screenshots).
 2. Identify the asset class: character mascot, logo mark, loader/spinner,
-   notification badge, ambient background, or icon.
+   notification badge, ambient background, icon, or **product card** (a README
+   card whose stage shows a product at work).
+   - A product card is a different job. **Read `docs/product-cards.md` first**:
+     draw it in the product's own design system, produce the stage from the real
+     thing, schedule it on a timeline, end on a frame about the work. Fork
+     `project-card`; build with `lib/text.js`, `lib/timeline.js`, `lib/media.js`.
+   - A logo that cycles expressions on a long loop without touching its geometry:
+     **read `docs/animating-a-mark.md` first**.
 3. Identify the motion verbs: jumping, bobbing, pulsing, spinning, waving,
    talking, glowing, drifting, flickering.
 4. Identify the style cues: pixel-art, gradient-smooth, flat, neon, comic.
@@ -119,7 +129,18 @@ node lib/render-cli.js <slug>
 
 This writes to `output/<slug>.svg`. Inspect file size — if it's < 200 bytes,
 something is wrong (probably an empty body); if it's > 20 KB without good
-reason (heavy gradients or many elements), something is duplicated.
+reason (heavy gradients or many elements), something is duplicated. A product
+card is the exception: outlined text and embedded pictures put it at 50 to 600 KB
+(budgets in `docs/product-cards.md` § 8).
+
+For anything on a timeline, check it in time rather than in one frame:
+
+```bash
+node scripts/capture-frames.mjs output/<slug>.svg --at=2,5.5,10
+```
+
+It captures each second through `<img>` on a light and a dark canvas and fails
+if the reduced-motion picture is still moving. Read the pictures it writes.
 
 ## Step 5 — Snapshot
 

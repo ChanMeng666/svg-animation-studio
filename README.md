@@ -3,8 +3,8 @@
 > A composable SVG animation system driven by Claude Code. Describe an
 > animation in natural language. Get a production-ready `.svg` file.
 
-[![Tests](https://img.shields.io/badge/tests-10%2F10-brightgreen)](./tests)
-[![Primitives](https://img.shields.io/badge/primitives-25-blue)](./docs/lib-api.md)
+[![Tests](https://img.shields.io/badge/tests-121%2F121-brightgreen)](./tests)
+[![Primitives](https://img.shields.io/badge/primitives-39-blue)](./docs/lib-api.md)
 [![License](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
 [![Built with Claude Code](https://img.shields.io/badge/built%20with-Claude%20Code-orange)](https://claude.com/claude-code)
 
@@ -46,6 +46,28 @@ the primitive library. Click any to see source.
 | [`purple-robot-jumping`](./docs/preview/purple-robot-jumping.svg) | [`lib/presets/purpleRobotJumping.js`](./lib/presets/purpleRobotJumping.js) | First **field-test** preset, grown entirely from natural language |
 
 Run `npm run dev` to see them animated in the browser preview grid.
+
+### Product cards
+
+Beyond mascots, logos and loaders, the studio builds **product cards**: one SVG,
+usually 1300 × 360, that plays inside a README and shows a product doing its job.
+
+![A project card: five lines of a preset are typed, the character they describe arrives and jumps, then a closing frame lists what ships](./docs/preview/project-card.svg)
+
+That needs three things a motion primitive does not give, so they are modules of
+their own:
+
+| Module | What it is for |
+|---|---|
+| [`lib/text.js`](./lib/text.js) | Text that survives `<img>` at any length: each glyph outlined once, placed with `<use>` |
+| [`lib/timeline.js`](./lib/timeline.js) | A schedule on one loop (`on`, `span`, `until`, shared scene keyframes, typed text), with the finished frame as the base state |
+| [`lib/media.js`](./lib/media.js) | Pictures carried inside the file: a stepped film strip, cross-faded stills |
+
+Two long-form guides hold the method and the mistakes:
+[`docs/product-cards.md`](./docs/product-cards.md) (a product at work) and
+[`docs/animating-a-mark.md`](./docs/animating-a-mark.md) (a frozen logo that
+changes expression on a long loop). Verify any timed piece with
+`node scripts/capture-frames.mjs output/<slug>.svg --at=2,5,10`.
 
 ---
 

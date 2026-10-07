@@ -86,6 +86,23 @@ gives false passes. When the target is an embed, verify there too:
 Flag any inline-vs-`<img>` divergence in your verdict — it's the single most
 common reason a "verified" animation looks broken once embedded.
 
+### 2c. If the SVG runs on a timeline (a product card, a multi-scene piece)
+
+Five frames a tenth of a second apart cannot judge a 40-second piece. Capture it
+in time instead, with the script rather than by hand:
+
+```bash
+node scripts/capture-frames.mjs output/$ARGUMENTS.svg --at=<one time inside each scene, and the last second>
+```
+
+It writes one PNG per time on a light and a dark canvas, confirms the image
+decoded, and exits non-zero if the reduced-motion picture is still moving (it
+loads the SVG as a document for that, because emulation does not reach `<img>`).
+Read the PNGs. Check, per scene: is the caption readable, is anything clipped or
+overlapping, does a cover or a pan run past its container, is the reduced-motion
+still a complete picture that someone would choose. Score against
+`docs/product-cards.md` § 7 as well as the rubric below.
+
 ### 3. Capture 5 keyframes
 
 Animation is running in real time. Take screenshots in quick succession
